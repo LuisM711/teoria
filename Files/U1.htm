@@ -1,0 +1,798 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <title>Autómatas © López Reyes</title>
+</head>
+
+<body class="container">
+  <script src="https://kit.fontawesome.com/23bddc577d.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">Expresiones aritméticas</label>
+    <input type="text" class="form-control" id="palabra" aria-describedby="" placeholder="Introduzca autómata" />
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Comprobación</label>
+    <input type="text" class="form-control" id="boleano" readonly />
+  </div>
+  <button onclick="funcion()" class="btn btn-primary" id="btn1">Comprobar</button><i
+    class="fa-solid fa-turn-down-left"></i>
+  <button type="button" class="btn btn-danger" id="borrar1" onclick="borrar1()">Borrar</button>
+
+  <pre>
+    <code>
+      33*100/45+2000*39+20 => true
+      5000 => false
+      25/50+100* => false
+    </code>
+  </pre>
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">Variable y números</label>
+    <input type="text" class="form-control" id="palabra2" aria-describedby="" placeholder="Introduzca autómata" />
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Comprobación</label>
+    <input type="text" class="form-control" id="boleano2" readonly />
+  </div>
+  <button onclick="funcion2()" class="btn btn-primary" id="btn2">Comprobar</button>
+  <button type="button" class="btn btn-danger" id="borrar2" onclick="borrar2()">Borrar</button>
+
+  <pre>
+    <code>
+      3500 => true
+      := => true
+      abc500 => true
+      edad1000 => true
+    </code>
+  </pre>
+
+
+
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">Número decimal</label>
+    <input type="text" class="form-control" id="palabra3" aria-describedby="" placeholder="Introduzca autómata" />
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Comprobación</label>
+    <input type="text" class="form-control" id="boleano3" readonly />
+  </div>
+  <button onclick="funcion3()" class="btn btn-primary" id="btn3">Comprobar</button>
+  <button type="button" class="btn btn-danger" id="borrar3" onclick="borrar3()">Borrar</button>
+
+  <pre>
+    <code>
+      10E-30 => true
+      50.81E2100 => true
+      1E+345 => true
+    </code>
+  </pre>
+
+
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">a*b U ab*</label>
+    <input type="text" class="form-control" id="palabra4" aria-describedby="" placeholder="Introduzca autómata" />
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Comprobación</label>
+    <input type="text" class="form-control" id="boleano4" readonly />
+  </div>
+  <button onclick="funcion4()" class="btn btn-primary" id="btn4">Comprobar</button>
+  <button type="button" class="btn btn-danger" id="borrar4" onclick="borrar4()">Borrar</button>
+
+  <pre>
+    <code>
+      a => true
+      b => true
+      aaab => true
+      abbbb => true
+    </code>
+  </pre>
+
+
+
+  <div class="form-group">
+    <label for="exampleInputEmail1">xyxyxy</label>
+    <input type="text" class="form-control" id="palabra5" aria-describedby="" placeholder="Introduzca autómata" />
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Comprobación</label>
+    <input type="text" class="form-control" id="boleano5" readonly />
+  </div>
+  <button onclick="funcion5()" class="btn btn-primary" id="btn5">Comprobar</button>
+  <button type="button" class="btn btn-danger" id="borrar5" onclick="borrar5()">Borrar</button>
+
+  <pre>
+    <code>
+      x => true
+      y => true
+      xy => true
+      xyxy => true
+      yxyx => true
+    </code>
+  </pre>
+
+  <!--  -->
+  <div class="card">
+    <div class="card-body">
+      © 2022 Luis Mario López Reyes
+    </div>
+  </div>
+
+  <script>
+    document.querySelector("#palabra").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn1").click();
+      if (event.key === "Escape") document.querySelector("#borrar1").click();
+      event.preventDefault();
+    });
+
+    document.querySelector("#palabra2").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn2").click();
+      if (event.key === "Escape") document.querySelector("#borrar2").click();
+      event.preventDefault();
+    });
+
+    document.querySelector("#palabra3").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn3").click();
+      if (event.key === "Escape") document.querySelector("#borrar3").click();
+      event.preventDefault();
+    });
+    document.querySelector("#palabra4").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn4").click();
+      if (event.key === "Escape") document.querySelector("#borrar4").click();
+      event.preventDefault();
+    });
+    document.querySelector("#palabra5").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn5").click();
+      if (event.key === "Escape") document.querySelector("#borrar5").click();
+      event.preventDefault();
+    });
+  </script>
+
+
+  <script>
+    // let letras = 'abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+    // let letrasMayusculas = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ';
+    // let letrasMinusculas = 'abcdefghijklmnñopqrstuvwxyz'
+    //let digitos = '0123456789';
+
+    let letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+
+
+    let letrasPrograma2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_'];
+    let letrasMinusculas = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    let letrasMayusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    function funcion() {
+      var tabla = new Array(2);
+      tabla[1] = new Array(2);
+      tabla[2] = new Array(2);
+      tabla[3] = new Array(2);
+      tabla[4] = new Array(2);
+      tabla[5] = new Array(2);
+      tabla[1]['digito'] = 3;
+      tabla[1]['signo'] = 2;
+      tabla[1]['FDC'] = 2;
+      tabla[1]['-'] = 5;
+      tabla[2]['digito'] = 'error';
+      tabla[2]['signo'] = 'error';
+      tabla[2]['FDC'] = 'error';
+      tabla[3]['digito'] = 3;
+      tabla[3]['signo'] = 5;
+      tabla[3]['FDC'] = 2;
+      tabla[4]['digito'] = 4;
+      tabla[4]['signo'] = 5;
+      tabla[4]['FDC'] = 'aceptar';
+      tabla[5]['digito'] = 4;
+      tabla[5]['signo'] = 2;
+      tabla[5]['FDC'] = 2;
+      var inputBoleano = document.getElementById("boleano");
+      let estado = 1;
+      let apuntador = 0;
+      let palabra;
+      let entrada = '';
+      palabra = document.getElementById("palabra").value;
+      let caracter = "";
+      do {
+        caracter = palabra.charAt(apuntador);
+        console.log('caracter ', caracter);
+
+
+        if (digitos.includes(caracter)) caracter = 'num';
+        switch (caracter) {
+          case '':
+            entrada = 'FDC';
+            break;
+          case 'num':
+            entrada = 'digito';
+            break;
+          case "+":
+          case "-":
+          case "*":
+          case "/":
+            entrada = 'signo';
+            if (caracter == '-' && estado == 1)
+              entrada = '-';
+            break;
+          default:
+            //inputBoleano.value = estado == 'aceptar'; return 0;
+            boleano.value = 'La cadena contiene espacios o caracteres inválidos'; return 0;
+            break;
+        }
+        console.log('Estado ', estado);
+        console.log('Entrada ', entrada);
+        estado = tabla[estado][entrada];
+        if (estado == 'error') { inputBoleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        console.log(estado);
+        apuntador++;
+      } while (estado != 'aceptar');
+      inputBoleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada';
+    }
+    function funcion2() {
+      var cuadro = new Array(2);
+      cuadro[1] = new Array(2);
+      cuadro[2] = new Array(2);
+      cuadro[3] = new Array(2);
+      cuadro[4] = new Array(2);
+      cuadro[5] = new Array(2);
+
+      cuadro[1]['letra'] = 4;
+      cuadro[1]['digito'] = 5;
+      cuadro[1][':'] = 2;
+      cuadro[1]['='] = 'error';
+      cuadro[1]['FDC'] = 'error';
+
+      cuadro[2]['letra'] = 'error';
+      cuadro[2]['digito'] = 'error';
+      cuadro[2][':'] = 'error';
+      cuadro[2]['='] = 3;
+      cuadro[2]['FDC'] = 'error';
+
+      cuadro[3]['letra'] = 'aceptar';
+      cuadro[3]['digito'] = 'aceptar';
+      cuadro[3][':'] = 'aceptar';
+      cuadro[3]['='] = 'aceptar';
+      cuadro[3]['FDC'] = 'aceptar';
+
+      cuadro[4]['letra'] = 4;
+      cuadro[4]['digito'] = 4;
+      cuadro[4][':'] = 'error';
+      cuadro[4]['='] = 'error';
+      cuadro[4]['FDC'] = 'aceptar';
+
+      cuadro[5]['letra'] = 'error';
+      cuadro[5]['digito'] = 5;
+      cuadro[5][':'] = 'errror';
+      cuadro[5]['='] = 'error';
+      cuadro[5]['FDC'] = 'aceptar';
+      //console.log(cuadro[4]['letra']);
+      var palabra = document.getElementById('palabra2').value;
+      var boleano = document.getElementById('boleano2');
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      do {
+        caracter = palabra.charAt(contador);
+        if (letrasPrograma2.includes(caracter)) caracter = 'letra';
+        else if (digitos.includes(caracter)) caracter = 'digito';
+        switch (caracter) {
+          case '':
+            entrada = 'FDC';
+            break;
+          case 'letra':
+            entrada = 'letra'
+            break;
+          case 'digito':
+            entrada = 'digito';
+            break;
+          case ':':
+            entrada = ':'
+            break;
+          case '=':
+            entrada = '=';
+            break;
+          default:
+            //boleano.value = estado == 'aceptar'; return 0;
+            boleano.value = 'La cadena contiene espacios o caracteres inválidos'; return 0;
+            break;
+        }
+        console.log(estado, ' ', entrada);
+        estado = cuadro[estado][entrada];
+        if (estado == 'error') { boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        contador++;
+      } while (estado != 'aceptar');
+      boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada';
+    }
+    function funcion3() {
+      var cuadro = new Array(2);
+      cuadro[0] = new Array(2);
+      cuadro[1] = new Array(2);
+      cuadro[2] = new Array(2);
+      cuadro[3] = new Array(2);
+      cuadro[4] = new Array(2);
+      cuadro[5] = new Array(2);
+      cuadro[6] = new Array(2);
+      cuadro[7] = new Array(2);
+
+      cuadro[0]['digito'] = 1;
+      cuadro[0]['-'] = 7;
+      cuadro[0]['+'] = 7;
+      cuadro[0]['punto'] = 7;
+      cuadro[0]['E'] = 7;
+      cuadro[0]['FDC'] = 'error'; //FDC 5
+
+      cuadro[1]['digito'] = 1;
+      cuadro[1]['-'] = 7;
+      cuadro[1]['+'] = 7;
+      cuadro[1]['punto'] = 2;
+      cuadro[1]['E'] = 4;
+      cuadro[1]['FDC'] = 'error'; //FDC 5
+
+      cuadro[2]['digito'] = 3;
+      cuadro[2]['-'] = 7;
+      cuadro[2]['+'] = 7;
+      cuadro[2]['punto'] = 7;
+      cuadro[2]['E'] = 7;
+      cuadro[2]['FDC'] = 'error'; //FDC 5
+
+      cuadro[3]['digito'] = 3;
+      cuadro[3]['-'] = 7;
+      cuadro[3]['+'] = 7;
+      cuadro[3]['punto'] = 7;
+      cuadro[3]['E'] = 4;
+      cuadro[3]['FDC'] = 'aceptar'; //FDC 5
+
+      cuadro[4]['digito'] = 6;
+      cuadro[4]['-'] = 5;
+      cuadro[4]['+'] = 5;
+      cuadro[4]['punto'] = 7;
+      cuadro[4]['E'] = 7;
+      cuadro[4]['FDC'] = 'error'; //FDC 5
+
+      cuadro[5]['digito'] = 6;
+      cuadro[5]['-'] = 7;
+      cuadro[5]['+'] = 7;
+      cuadro[5]['punto'] = 7;
+      cuadro[5]['E'] = 7;
+      cuadro[5]['FDC'] = 'error'; //FDC 5
+
+      cuadro[6]['digito'] = 6;
+      cuadro[6]['-'] = 7;
+      cuadro[6]['+'] = 7;
+      cuadro[6]['punto'] = 7;
+      cuadro[6]['E'] = 7;
+      cuadro[6]['FDC'] = 'aceptar'; //FDC 5
+
+      cuadro[7]['digito'] = 7;
+      cuadro[7]['-'] = 7;
+      cuadro[7]['+'] = 7;
+      cuadro[7]['punto'] = 7;
+      cuadro[7]['E'] = 7;
+      cuadro[7]['FDC'] = 'error'; //FDC 5
+      //console.log(cuadro[2]['punto']);
+      var palabra = document.getElementById('palabra3').value;
+      var boleano = document.getElementById('boleano3');
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      do {
+        caracter = palabra.charAt(contador);
+
+        if (digitos.includes(caracter)) caracter = 'digito';
+        else if (caracter == 'e' || caracter == 'E' && caracter != ' ') caracter = 'E';
+        switch (caracter) {
+          case '':
+            entrada = 'FDC';
+            break;
+          case 'digito':
+            entrada = 'digito'
+            break;
+          case '.':
+            entrada = 'punto';
+            break;
+          case '-':
+            entrada = '-';
+            break;
+          case '+':
+            entrada = '+';
+            break;
+          case 'E':
+            entrada = 'E';
+            break;
+          default:
+            //boleano.value = estado == 'aceptar'; return 0;
+            boleano.value = 'La cadena contiene espacios o caracteres inválidos'; return 0;
+            break;
+        }
+        estado = cuadro[estado][entrada];
+        console.log(estado);
+        if (estado == 'error') { boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        contador++;
+      } while (estado != 'aceptar');
+      boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada';
+    }
+    function funcion4() {
+      var cuadro = new Array(2);
+      cuadro[1] = new Array(2);
+      cuadro[2] = new Array(2);
+      cuadro[3] = new Array(2);
+      cuadro[4] = new Array(2);
+      cuadro[5] = new Array(2);
+      cuadro[6] = new Array(2);
+      cuadro[7] = new Array(2);
+
+      cuadro[1]['a'] = 2;
+      cuadro[1]['b'] = 7;
+      cuadro[1]['FDC'] = 'error';
+
+      cuadro[2]['a'] = 4;
+      cuadro[2]['b'] = 3;
+      cuadro[2]['FDC'] = 'aceptar';
+
+      cuadro[3]['a'] = 6;
+      cuadro[3]['b'] = 3;
+      cuadro[3]['FDC'] = 'aceptar';
+
+      cuadro[4]['a'] = 4;
+      cuadro[4]['b'] = 5;
+      cuadro[4]['FDC'] = 'error';
+
+      cuadro[5]['a'] = 6;
+      cuadro[5]['b'] = 6;
+      cuadro[5]['FDC'] = 'aceptar';
+
+      cuadro[6]['a'] = 'error';
+      cuadro[6]['b'] = 'error';
+      cuadro[6]['FDC'] = 'error';
+
+      cuadro[7]['a'] = 6;
+      cuadro[7]['b'] = 6;
+      cuadro[7]['FDC'] = 'aceptar';
+
+      //console.log(cuadro[2]['punto']);
+      var palabra = document.getElementById('palabra4').value;
+      var boleano = document.getElementById('boleano4');
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      do {
+        caracter = palabra.charAt(contador);
+        caracter = caracter.toLowerCase();
+
+        switch (caracter) {
+          case '':
+            entrada = 'FDC';
+            break;
+          case 'a':
+            entrada = 'a'
+            break;
+          case 'b':
+            entrada = 'b';
+            break;
+          default:
+            //boleano.value = estado == 'aceptar'; return 0;
+            boleano.value = 'La cadena contiene espacios o caracteres inválidos'; return 0;
+            break;
+        }
+        console.log(estado, ' ', entrada);
+        estado = cuadro[estado][entrada];
+        if (estado == 'error') { boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        contador++;
+      } while (estado != 'aceptar');
+      boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada';
+    }
+    function funcionX() {
+      var palabra = document.getElementById('palabra5').value;
+      var boleano = document.getElementById('boleano5');
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      let gramatica = new Array(2);
+      gramatica[0] = new Array(2);
+      gramatica[1] = new Array(2);
+      gramatica[2] = new Array(2);
+      gramatica[3] = new Array(2);
+      gramatica[0] = ["S", "xX"];//1
+      gramatica[1] = ["S", "yY"];//2
+      gramatica[2] = ["X", "yY"];//3
+      gramatica[3] = ["Y", "xX"];//4
+
+      gramatica[0] = ["S", "xX"];//1
+      gramatica[1] = ["X", "yY"];//2
+      gramatica[2] = ["X", "xY"];//3
+      gramatica[3] = ["Y", " L"];//4
+
+      let cad_gramatica = "", sig_regla = "", valor = "", flag = false;
+      let n = 0, i = 0;
+      console.log("PALABRA: ", palabra);
+      sig_regla = "S";
+      console.log(sig_regla);
+      do {
+        caracter = palabra.charAt(contador);
+        for (i = 0; i < 4; i++) {
+          valor = gramatica[i][1];
+          //console.log(valor);
+          if (sig_regla == gramatica[i][0]) {
+            if (caracter == valor[0]) {
+              sig_regla = valor[1];
+              if (flag) cad_gramatica = cad_gramatica.slice(0, -1);
+              cad_gramatica = cad_gramatica + caracter + sig_regla;
+              console.log(cad_gramatica);
+              flag = true; break;
+            }
+          } else if (sig_regla == "L") console.log("Lambda");
+        }
+        contador++;
+      } while (contador <= palabra.length);
+      cad_gramatica = cad_gramatica.slice(0, -1);
+      console.log("CADENA FINAL ", cad_gramatica);
+      if (palabra.length === 0) boleano.value = "Cadena vacia";
+      else if (palabra === cad_gramatica) boleano.value = "Cadena aceptada"; else boleano.value = "Cadena no aceptada";
+    }
+    function funcionXY() {
+      let palabra = '';
+      palabra = document.getElementById('palabra5').value;
+      var boleano = document.getElementById('boleano5');
+      if (palabra.match(' ')) { boleano.value = "La cadena contiene espacios en blanco"; return 0; }
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      let gramatica = new Array(2);
+      gramatica[0] = new Array(2);
+      gramatica[1] = new Array(2);
+      gramatica[2] = new Array(2);
+      gramatica[3] = new Array(2);
+      gramatica[4] = new Array(2);
+      gramatica[5] = new Array(2);
+
+      // gramatica[0] = ["S", "xX"];
+      // gramatica[1] = ["X", "yX"];
+      // gramatica[2] = ["X", "xY"];
+      // gramatica[3] = ["Y", " L"];
+
+
+      gramatica[0] = ["S", "xX"];//1
+      gramatica[1] = ["S", "yY"];//2
+      gramatica[2] = ["X", "yY"];//3
+      gramatica[3] = ["X", " L"];//3
+      gramatica[4] = ["Y", "xX"];//4
+      gramatica[5] = ["Y", " L"];//4
+      palabra += ' ';
+      let cad_gramatica = "", sig_regla = "", valor = "";
+      let n = 0, i = 0, flag = false, first = false;
+      console.log("PALABRA: ", palabra);
+      sig_regla = "S";
+      console.log(sig_regla);
+      do {
+        if (sig_regla == "L") console.log("LLL");
+        //debugger;
+        flag = false;
+        caracter = palabra.charAt(contador);
+        //if(caracter==''&&sig_regla=="L")console.log("logrado");
+        // console.log("CARACTER: ", caracter);
+        for (i = 0; i < gramatica.length; i++) {
+          valor = gramatica[i][1];
+          if (sig_regla == gramatica[i][0]) {
+            if (caracter == valor[0]) {
+              first = true;
+              sig_regla = valor[1];
+              console.log("sig regla ", sig_regla);
+              if (first) cad_gramatica = cad_gramatica.slice(0, -1);
+              cad_gramatica += caracter + sig_regla;
+              console.log(cad_gramatica);
+              flag = true;
+              break;
+            }
+          }
+          else if (sig_regla == "Y" && contador == palabra.length) {
+            flag = true;
+            sig_regla = "L";
+          }
+
+        }
+        contador++;
+        //console.log('Flag ',flag, ' Sig ',sig_regla);
+      } while (contador <= palabra.length);
+      cad_gramatica = cad_gramatica.slice(0, -1);
+      console.log("CADENA FINAL ", cad_gramatica);
+      if (palabra.length === 0) boleano.value = "Cadena vacia";
+      else if (palabra === cad_gramatica) boleano.value = "Cadena aceptada"; else boleano.value = "Cadena no aceptada";
+    }
+    // function funcion5() {
+    //   let palabra = '';
+    //   palabra = document.getElementById('palabra5').value;
+    //   var boleano = document.getElementById('boleano5');
+    //   if (palabra.match(' ')) { boleano.value = "La cadena contiene espacios en blanco"; return 0; }
+    //   let estado = 1;
+    //   let contador = 0;
+    //   let caracter = '';
+    //   // let gramatica =
+    //   //   [
+    //   //     ["S", "xX"],
+    //   //     ["S", "yY"],
+    //   //     ["X", "yY"],
+    //   //     ["X", " L"],
+    //   //     ["Y", "xX"],
+    //   //     ["Y", " L"]
+    //   //   ];
+    //   // let gramatica =
+    //   //   [
+    //   //     ["S", "xX"],
+    //   //     ["X", "yX"],
+    //   //     ["X", "xY"],  
+    //   //     ["Y", " L"]
+    //   //   ];
+    //   let gramatica =
+    //     [
+    //       ["S", "yX"],
+    //       ["X", "xA"],
+    //       ["A", "xX"],  
+    //       ["X", "yY"],
+    //       ["Y"," L"],
+    //       ["X"," L"],
+          
+    //     ];
+    //   palabra += ' ';
+    //   let cad_gramatica = "", sig_regla = "", valor = "";
+    //   let n = 0, i = 0, flag = false, first = false;
+    //   console.log("PALABRA: ", palabra);
+    //   sig_regla = "S";
+    //   console.log(sig_regla);
+    //   do {
+    //     flag = false;
+    //     caracter = palabra.charAt(contador);
+    //     for (i = 0; i < gramatica.length; i++) {
+    //       valor = gramatica[i][1];
+    //       if (sig_regla == gramatica[i][0]) {
+    //         if (caracter == valor[0]) {
+    //           first = true;
+    //           sig_regla = valor[1];
+    //           if (first) cad_gramatica = cad_gramatica.slice(0, -1);
+    //           cad_gramatica += caracter + sig_regla;
+    //           console.log(cad_gramatica);
+    //           flag = true;
+    //           break;
+              
+    //         }
+    //       }
+    //       // else if (sig_regla == "Y" && contador == palabra.length) {
+    //       //   flag = true;
+    //       //   sig_regla = "L";
+    //       // }
+    //     }//if(!flag)for (i = 0; i < gramatica.length; i++)if(gramatica[i][0]==sig_regla&& gramatica[i][1].charAt(1)==="L"){flag=true;console.log("LLLLLLL");}
+    //     contador++;
+    //   } while (contador <= palabra.length);
+    //   cad_gramatica = cad_gramatica.slice(0, -1);
+    //   console.log("CADENA FINAL ", cad_gramatica);
+    //   if (palabra.length === 0) boleano.value = "Cadena vacia";
+    //   else if (palabra === cad_gramatica) boleano.value = "Cadena aceptada"; else boleano.value = "Cadena no aceptada";
+    // }
+    function funcion5() {
+      let palabra = '';
+      palabra = document.getElementById('palabra5').value;
+      var boleano = document.getElementById('boleano5');
+      if (palabra.match(' ')) { boleano.value = "La cadena contiene espacios en blanco"; return 0; }
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      let gramatica =
+        [
+          ["S", "xX"],
+          ["S", "yY"],
+          ["X", "yY"],
+          ["X", " L"],
+          ["Y", "xX"],
+          ["Y", " L"]
+        ];
+      // let gramatica =
+      //   [
+      //     ["S", "xX"],
+      //     ["X", "yX"],
+      //     ["X", "xY"],  
+      //     ["Y", " L"]
+      //   ];
+      //let gramatica =
+       // [
+        //  ["S", "yX"],
+         // ["X", "xA"],
+          //["A", "xX"],  
+         // ["X", "yY"],
+         // ["Y"," L"],
+         // ["X"," L"],
+        //  
+        //];
+	// let gramatica = 
+	// [
+	// ["S"," L"],
+	// ["S","xX"],
+	// ["X","xS"],
+	// ["X","yY"],
+	// ["Y","yX"],
+	// ["Y"," L"]
+		
+
+	// ]
+      palabra += ' ';
+      let cad_gramatica = "", sig_regla = "", valor = "";
+      let n = 0, i = 0, flag = false, first = false;
+      console.log("PALABRA: ", palabra);
+      sig_regla = "S";
+      console.log(sig_regla);
+      do {
+        flag = false;
+        caracter = palabra.charAt(contador);
+        for (i = 0; i < gramatica.length; i++) {
+          valor = gramatica[i][1];
+          if (sig_regla == gramatica[i][0]) {
+            if (caracter == valor[0]) {
+              first = true;
+              sig_regla = valor[1];
+              if (first) cad_gramatica = cad_gramatica.slice(0, -1);
+              cad_gramatica += caracter + sig_regla;
+              console.log(cad_gramatica);
+              flag = true;
+              break;
+            }
+          }
+        }
+        contador++;
+      } while (contador <= palabra.length);
+      cad_gramatica = cad_gramatica.slice(0, -1);
+      console.log("CADENA FINAL ", cad_gramatica);
+      if (palabra.length === 0) boleano.value = "Cadena vacia";
+      else if (palabra === cad_gramatica) boleano.value = "Cadena aceptada"; else boleano.value = "Cadena no aceptada";
+    }
+    function borrar1() {
+      var inputPalabra = document.getElementById("palabra");
+      var inputBoleano = document.getElementById("boleano");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+    }
+    function borrar2() {
+      var inputPalabra = document.getElementById("palabra2");
+      var inputBoleano = document.getElementById("boleano2");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+    }
+    function borrar3() {
+      var inputPalabra = document.getElementById("palabra3");
+      var inputBoleano = document.getElementById("boleano3");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+    }
+    function borrar4() {
+      var inputPalabra = document.getElementById("palabra4");
+      var inputBoleano = document.getElementById("boleano4");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+    }
+    function borrar5() {
+      var inputPalabra = document.getElementById("palabra5");
+      var inputBoleano = document.getElementById("boleano5");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+    }
+
+
+
+  </script>
+</body>
+
+</html>

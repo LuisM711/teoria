@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <title>Autómatas © López Reyes</title>
+</head>
+
+<body class="container">
+  <script src="https://kit.fontawesome.com/23bddc577d.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+
+
+
+  <div class="container">
+    <div class="row row-cols-2">
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Automata</label>
+          <input type="text" class="form-control" id="palabra1" aria-describedby="" placeholder="Introduzca autómata" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Expresion regular</label>
+          <input type="text" class="form-control" id="expresion1" aria-describedby="" placeholder="Introduzca expresion"
+            value="a*bUb*a" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputPassword1">Comprobación</label>
+          <input type="text" class="form-control" id="boleano1" readonly
+            placeholder="Aqui se mostraran los resultados" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"><button onclick="funcion1()" class="btn btn-primary" id="btn1">Comprobar</button>
+        <button type="button" class="btn btn-danger" id="borrar1" onclick="borrar1()">Borrar</button>
+      </div>
+      <div class="col"></div>
+      <div class="col"><button type="button" class="btn btn-secondary" id="borrar1"
+          onclick="borrarComprobacion()">Borrar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        © 2022 Luis Mario López Reyes
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- <pre>
+    <code>
+      3500 => true
+      := => true
+      abc500 => true
+      edad1000 => true
+    </code>
+  </pre> -->
+
+
+
+
+
+  <!--  -->
+
+
+  <script>
+    document.querySelector("#palabra1").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn1").click();
+      if (event.key === "Escape") document.querySelector("#borrar1").click();
+      event.preventDefault();
+    });
+  </script>
+
+
+  <script>
+
+    let letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    //let letrasExpresion = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+
+
+    let letrasPrograma2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_'];
+    let letrasMinusculas = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    let letrasMayusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    function checarExpresion(palabra) {
+      var cuadro = new Array(2);
+      cuadro[1] = new Array(2);
+      cuadro[2] = new Array(2);
+      cuadro[3] = new Array(2);
+      cuadro[4] = new Array(2);
+
+      cuadro[1]['letra'] = 2;
+      cuadro[1]['U'] = 'error';
+      cuadro[1]['signo'] = 'error';
+      cuadro[1]['FDC'] = 'error';
+
+      cuadro[2]['letra'] = 2;
+      cuadro[2]['U'] = 4;
+      cuadro[2]['signo'] = 3;
+      cuadro[2]['FDC'] = 'aceptar';
+
+      cuadro[3]['letra'] = 2;
+      cuadro[3]['U'] = 4;
+      cuadro[3]['signo'] = 'error';
+      cuadro[3]['FDC'] = 'aceptar';
+
+      cuadro[4]['letra'] = 2;
+      cuadro[4]['U'] = 'error';
+      cuadro[4]['signo'] = 'error';
+      cuadro[4]['FDC'] = 'error';
+      //var palabra = document.getElementById('palabra1').value;
+      var boleano = document.getElementById('boleano1');
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      do {
+        caracter = palabra.charAt(contador);
+        if (letrasMinusculas.includes(caracter)) caracter = 'letra';
+        switch (caracter) {
+          case '':
+            entrada = 'FDC';
+            break;
+          case 'letra':
+            entrada = 'letra';
+            break;
+          case '*':
+            entrada = 'signo';
+            break;
+          case '+':
+            entrada = 'signo';
+            break;
+          case 'U':
+            entrada = 'U';
+            break;
+          default:
+            //boleano.value = estado == 'aceptar'; return 0;
+            // boleano.value = 'La cadena contiene espacios o caracteres inválidos'; return 0;
+            return false;
+            break;
+        }
+        //console.log(estado, ' ', entrada, caracter);
+        estado = cuadro[estado][entrada];
+        // if (estado == 'error') { boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        if (estado == 'error') return false;
+        contador++;
+      } while (estado != 'aceptar');
+      // boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada';
+      return true;
+    }
+    function funcion1() {
+      let palabra = '';
+      //Este es el input de la respuesta final
+      var boleano = document.getElementById('boleano1');
+      palabra = document.getElementById('palabra1').value;
+      if (palabra.match(' ')) { boleano.value = "La cadena contiene espacios en blanco"; return 0; }
+      let expresion = document.getElementById('expresion1').value;
+      //Checo si la expresion realmente es una expresion con un automata
+      if (!checarExpresion(expresion)) { boleano.value = "Expresion invalida"; return 0; }
+      let expresiones = expresion.split("U");
+
+      let contadorValidas = 0;
+      expresiones.forEach(element => {
+        if (validar(element, palabra)) contadorValidas++;
+      });//Si almenos uno responde de manera positiva significa que funciona
+      console.log("Cadena valida en ", contadorValidas, ' expresiones');
+      //Mando a mostrar si coinciido al menos una vez
+      boleano.value = contadorValidas > 0 ? "Cadena aceptada" : "Cadena no aceptada";
+    }
+
+
+    function validar(expresion, palabra) {
+
+      let contadorPalabra = 0, contadorExpresion = 0;
+      let caracterPalabra = '', caracterGramatica = '';
+      //No aceptamos palabras con espacios
+      if (palabra.match(' ')) { return false; }
+      do {
+        //Validacion si se encuentra un signo despues del caracter inicial
+        if (expresion[contadorExpresion + 1] == "*" || expresion[contadorExpresion + 1] == "+") {
+          if (expresion[contadorExpresion + 1] === "*") {
+            //Mientras este el caracter, ir recorriendo la palabra si coincide con ese caracter hasta que deje de coincidir
+            while (palabra[contadorPalabra] == expresion[contadorExpresion]) {
+              contadorPalabra++;
+            };
+          }
+          else if (expresion[contadorExpresion + 1] === "+") {
+            //En este si manda error porque al ser + debe estar minimo una vez
+            if (palabra[contadorPalabra] != expresion[contadorExpresion]) { return false; }
+            while (palabra[contadorPalabra] == expresion[contadorExpresion]) {
+              contadorPalabra++;
+            };
+          }
+          contadorExpresion++;/*Se aumenta el contador de la expresion para no tener la necesidad de volver a revisar el signo*/
+        }
+        else {
+          //Si es letra sola, solamente valido que este la letra, sino, mando error
+          if (palabra[contadorPalabra] != expresion[contadorExpresion]) return false;
+          contadorPalabra++;
+        }
+        contadorExpresion++;
+      } while (contadorExpresion < expresion.length);
+      console.log(contadorPalabra, palabra.length);
+      return contadorPalabra == palabra.length;
+    }
+
+
+
+
+
+
+
+    function validarPRUEBA(expresion, palabra) {
+
+      let contadorPalabra = 0, contadorExpresion = 0;
+      let caracterPalabra = '', caracterGramatica = '';
+      //No aceptamos palabras con espacios
+      if (palabra.match(' ')) { return false; }
+      do {
+        //Validacion si se encuentra un signo despues del caracter inicial
+        if (expresion[contadorExpresion + 1] == "*" || expresion[contadorExpresion + 1] == "+") {
+          switch (expresion[contadorExpresion + 1]) {
+            case "*":
+              //Mientras este el caracter, ir recorriendo la palabra si coincide con ese caracter hasta que deje de coincidir
+              while (palabra[contadorPalabra] == expresion[contadorExpresion]) {
+                contadorPalabra++;
+              };
+              break;
+            case "+":
+              //En este si manda error porque al ser + debe estar minimo una vez
+              if (palabra[contadorPalabra] != expresion[contadorExpresion]) { return false; }
+              while (palabra[contadorPalabra] == expresion[contadorExpresion]) {
+                contadorPalabra++;
+              };
+              break;
+            default://Se supone que si se valido la expresion con su funcion automata este default nunca debe entrar, el programa se protege de que no entren cadenas vacias al cortar el while
+              break;
+          }
+          contadorExpresion++;
+        }
+        else {
+          //Si es letra sola, solamente valido que este la letra, sino, mando error
+          if (palabra[contadorPalabra] != expresion[contadorExpresion]) return false;
+          contadorPalabra++;
+        }
+        contadorExpresion++;
+      } while (contadorExpresion < expresion.length);
+      console.log(contadorPalabra, palabra.length);
+      return contadorPalabra == palabra.length;
+    }
+
+
+
+
+
+
+
+    function borrar1() {
+      var inputPalabra = document.getElementById("palabra1");
+      var inputBoleano = document.getElementById("boleano1");
+      var inputExpresion = document.getElementById("expresion1");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+      inputExpresion.value = "";
+    }
+    function borrarComprobacion() {
+      var inputBoleano = document.getElementById("boleano1");
+      inputBoleano.value = "";
+    }
+
+  </script>
+</body>
+
+</html>

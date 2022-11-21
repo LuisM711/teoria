@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <title>Tabla de analisis LR © López Reyes</title>
+</head>
+
+<body class="container">
+  <script src="https://kit.fontawesome.com/23bddc577d.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+
+
+
+  <div class="container">
+    <div class="row row-cols-2">
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Palabra</label>
+          <input type="text" class="form-control" id="input1" aria-describedby=""
+            placeholder="Introduzca palabra a verificar" value="zazabzbz" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputPassword1">Comprobación</label>
+          <input type="text" class="form-control" id="output1" readonly
+            placeholder="Aqui se mostraran los resultados" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"><button onclick="analisis()" class="btn btn-primary" id="btn1">Comprobar</button>
+        <button type="button" class="btn btn-danger" id="borrar1" onclick="borrar1()">Borrar</button>
+      </div>
+      <div class="col"></div>
+      <div class="col"><button type="button" class="btn btn-secondary" id="borrar1"
+          onclick="borrarComprobacion()">Borrar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        © 2022 Luis Mario López Reyes
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script>
+    document.querySelector("#input1").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn1").click();
+      if (event.key === "Escape") document.querySelector("#borrar1").click();
+      event.preventDefault();
+    });
+  </script>
+
+
+  <script>
+
+    let letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let letrasExamen = ['a', 'b', 'c', 'e', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'p', 'q', 's', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+
+
+    let letrasPrograma2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_'];
+    let letrasMinusculas = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    let letrasMayusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+
+    analisis = () => {
+      console.clear();
+      let input = document.getElementById('input1').value;
+      let output = document.getElementById('output1');
+      try {
+        output.value = checarAnalisis(input) ? "Cadena aceptada" : "Cadena no aceptada";
+      } catch (error) {
+        output.value = "Cadena no aceptada";
+      }
+    }
+
+    checarAnalisis = (input) => {
+      //Declaracion de tabla de analisis
+      var tabla = new Array(2);
+      tabla[0] = new Array(2);
+      tabla[1] = new Array(2);
+      tabla[2] = new Array(2);
+      tabla[3] = new Array(2);
+      tabla[4] = new Array(2);
+      tabla[5] = new Array(2);
+      tabla[6] = new Array(2);
+      tabla[7] = new Array(2);
+      tabla[8] = new Array(2);
+      tabla[9] = new Array(2);
+      tabla[0]['z'] = "d2";
+      tabla[0]['S'] = 1;
+      tabla[1]['FDC'] = "aceptar";
+      tabla[2]['a'] = "d4";
+      tabla[2]['FDC'] = "S--->z";
+      tabla[2]['A'] = 3;
+      tabla[3]['FDC'] = "S--->zA";
+      tabla[4]['a'] = "d4";
+      tabla[4]['b'] = "d6";
+      tabla[4]['A'] = 5;
+      tabla[5]['b'] = "d7";
+      tabla[6]['a'] = "d4";
+      tabla[6]['b'] = "A--->ab";
+      tabla[6]['FDC'] = "A--->ab";
+      tabla[6]['A'] = 8;
+      tabla[7]['a'] = "d4";
+      tabla[7]['b'] = "A--->aAb"; 
+      tabla[7]['FDC'] = "A--->aAb";
+      tabla[7]['A'] = 9;
+      tabla[8]['b'] = "A--->abA";
+      tabla[8]['FDC'] = "A--->abA";
+      tabla[9]['b'] = "A--->aAbA";
+      tabla[9]['FDC'] = "A--->aAbA";
+
+      //debugger;   
+      let palabra = input;
+      console.log("Palabra: ", palabra);
+      let pila = [];
+      console.log("Pila", pila);
+      let valorTabla = '';
+      let contador = 0;
+      let simboloEspecial = 0;
+      pila.push(simboloEspecial);
+      let simbolo = palabra[contador];
+      valorTabla = tabla[simboloEspecial][simbolo];
+      let auxDerecho = '';
+      let auxIzquierdo = '';
+      let control = 0;
+      let topeDePila = '';
+      
+      while (valorTabla != "aceptar") {
+        //Esta linea no es necesaria, es para evitar errores si se presenta un fallo
+      control++; if (control > 500) { console.log("fatal error"); return false; }
+        //Mostrar datos de como va la pila y de cuanto queda como resto de la entrada
+        console.log("Pila", pila, "Resto de la entrada: " + palabra.substring(contador, palabra.length));
+        //Si el primer caracter de la tabla es 'd' se entiende que es un desplazamiento
+        if (tabla[simboloEspecial][simbolo].charAt(0) == "d") {
+          //SI EL VALOR ES UN DESPLAZAMIENTO
+          //Agregarle a la pila el simbolo de la palabra
+          pila.push(simbolo);
+          //Se calcula el numero del simbolo agarrando la parte derecha de la palabra
+          //Por ejemplo, si la tabla dice 'd13', esta funcion va a sacar unicamente el '13'
+          simboloEspecial = Number(tabla[simboloEspecial][simbolo].split('d')[1]);
+          //Se le agrega a la pila dicho simbolo, el numero
+          pila.push(simboloEspecial);
+          contador++;
+          //Se calcula el siguiente simbolo
+          simbolo = palabra.charAt(contador);
+          if (simbolo == "") { simbolo = 'FDC'; }
+        }//Si en la tabla se encuentra una flecha '--->', significa que es una reduccion 
+        else if (tabla[simboloEspecial][simbolo].match("--->") != null) {
+          //SI EL VALOR ES UNA REDUCCION
+          //El lado derecho se separa del izquierdo, se voltea y se guarda en la variable 'auxDerecho'
+          //Por ejemplo si la tabla dice 'S--->zMNz', entonces el lado derecho se guarda volteado 'zNMz'
+          auxDerecho = reverse(tabla[simboloEspecial][simbolo].split('--->')[1]);
+          //if(reverse(auxDerecho)=="lambda")break;
+          //El lado izquierdo seria lo que va antes de la flecha, se captura a continuacion
+          auxIzquierdo = tabla[simboloEspecial][simbolo].split('--->')[0];
+          //Este ciclo lo que hace es extraer de la pila lo del lado derecho de la tabla
+          //Va quitando de dos en dos se podria decir, siempre checando que coincida el tope de pila con lo que se quiere sacar
+          for (let i = 0; i < auxDerecho.length; i++) {
+            topeDePila = pila[pila.length - 1];
+            if (topeDePila == auxDerecho[i])
+              pila.pop();
+            else {
+              topeDePila = pila[pila.length - 2];
+              if (topeDePila == auxDerecho[i]) { pila.pop(); pila.pop(); }
+              else return false;
+            }
+          }
+          //Esta asignacion hace que el simobolo especial sea el tope de la pila
+          simboloEspecial = pila[pila.length - 1];
+          //Se hace un push a la pila con el simbolo que este al lado izquierdo
+          //Por ejemplo 'M--->aMa', va a hacer un push unicamente con la 'M', por estar al lado izquierdo
+          pila.push(auxIzquierdo);
+          //Se calcula el siguiente simbolo especial con ayuda del auxiliar izquierdo
+          simboloEspecial = tabla[simboloEspecial][auxIzquierdo];
+          //Se agrega a la pila dicho simbolo especial
+          pila.push(simboloEspecial);
+
+        }
+        else if (tabla[simboloEspecial][simbolo] == "") {
+          //SI EL VALOR ESTA EN BLANCO MANDAR A ERROR
+          return false;
+        }
+        //Se calcula al final cual va ser el proximo valor de la tabla, aqui
+        valorTabla = tabla[simboloEspecial][simbolo];
+      }
+      console.log("Pila", pila, "Resto de la entrada: " + palabra.substring(contador, palabra.length));
+      //Si lo ultimo que se leyo de la palabra NO es un fin de cadena, mandar error
+      if (simbolo != "FDC") return false;
+      //Se vacia la pila
+      pila = [];
+      console.log("Aceptada Pila", pila, "Resto de la entrada: " + palabra.substring(contador, palabra.length));
+      return true;
+
+    }
+
+
+    function reverse(s) {
+      if (s == undefined) return undefined;
+      return s.split("").reverse().join("");
+    }
+
+    function borrar1() {
+      var inputPalabra = document.getElementById("input1");
+      var inputBoleano = document.getElementById("output1");
+      //var inputExpresion = document.getElementById("expresion1");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+      //inputExpresion.value = "";
+    }
+    function borrarComprobacion() {
+      var inputBoleano = document.getElementById("output1");
+      inputBoleano.value = "";
+    }
+
+  </script>
+</body>
+
+</html>

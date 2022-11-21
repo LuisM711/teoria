@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <title>Maquina de Turing(MT) © López Reyes</title>
+</head>
+
+<body class="container">
+  <script src="https://kit.fontawesome.com/23bddc577d.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap @4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <div class="container">
+    <div class="row row-cols-2 inputs">
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Entrada</label>
+          <input type="text" class="form-control" id="input1" aria-describedby=""
+            placeholder="Introduzca palabra a verificar" value="aab" />
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <label id="label_cinta" for="exampleInputEmail1">Salida [Cinta final]</label>
+          <input type="text" class="form-control" id="cinta1" aria-describedby="" placeholder="" value="" readonly />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputPassword1">Comprobación</label>
+          <input type="text" class="form-control" id="output1" readonly
+            placeholder="Aqui se mostraran los resultados" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"><button onclick="analisis()" class="btn btn-primary" id="btn1">Comprobar</button>
+        <button type="button" class="btn btn-danger" id="borrar1" onclick="borrar1()">Borrar</button>
+      </div>
+      <div class="col"></div>
+      <div class="col"><button type="button" class="btn btn-secondary" id="borrar1"
+          onclick="borrarComprobacion()">Borrar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        © 2022 Luis Mario López Reyes
+      </div>
+    </div>
+  </div>
+  <script>
+    document.querySelector("#input1").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn1").click();
+      if (event.key === "Escape") document.querySelector("#borrar1").click();
+      event.preventDefault();
+    });
+    $(document).ready(function () {
+      $('#input1').keyup(function () { analisis(); });
+    });
+  </script>
+
+
+  <script>
+
+    let letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+
+
+    let letrasMinusculas = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    let letrasMayusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    let cinta = [];
+    onload = (event) => { document.getElementById('btn1').click(); };
+    analisis = () => {
+      console.clear();
+      let input = document.getElementById('input1').value;
+      let output = document.getElementById('output1');
+      let output2 = document.getElementById('cinta1');
+      try {
+        output.value = checarAnalisis(input) ? "Cadena aceptada" : "Cadena no aceptada";
+      } catch (error) {
+        output.value = "Cadena no aceptada";
+      }
+      let cintaFinal = "";
+      cintaFinal += "[";
+      cinta.forEach(callback = (value, index) => {
+        cintaFinal += index == cinta.length - 1 ? value : value + ", ";
+      });
+      cintaFinal += "]";
+      output2.value = cintaFinal;
+    }
+    checarAnalisis = (input) => {
+      //Declaracion de tabla de analisis Δ
+      let tabla = new Array(2);
+      tabla["q0"] = new Array(2);
+      tabla["q1"] = new Array(2);
+      tabla["q2"] = new Array(2);
+      tabla["q3"] = new Array(2);
+      tabla["q4"] = new Array(2);
+      tabla["q5"] = new Array(2);
+      tabla["q6"] = new Array(2);
+      tabla["q7"] = new Array(2);
+      
+
+      tabla["q0"]['a'] = ['x', 'R', 1];
+      tabla["q0"]['Δ'] = ['Δ', 'S', 4];
+      tabla["q0"]['y'] = ['y', 'L', 6];
+
+      tabla["q1"]['a'] = ['a', 'R', 1];
+      tabla["q1"]['y'] = ['y', 'R', 1];
+      tabla["q1"]['Δ'] = ['a', 'L', 0];
+      tabla["q1"]['b'] = ['y', 'R', 2];
+
+      tabla["q2"]['b'] = ['b', 'R', 2];
+      tabla["q2"]['Δ'] = ['Δ', 'L', 3];
+
+      tabla["q3"]['y'] = ['y', 'L', 3];
+      tabla["q3"]['b'] = ['b', 'L', 3];
+      tabla["q3"]['a'] = ['a', 'L', 3];
+      tabla["q3"]['x'] = ['x', 'R', 0];
+
+      tabla["q4"] = "aceptar";
+
+      tabla["q5"]['y'] = ['y', 'R', 5];
+      tabla["q5"]['x'] = ['x', 'R', 5];
+      tabla["q5"]['a'] = ['a', 'L', 7];
+      tabla["q5"]['b'] = ['b', 'L', 7];
+
+      tabla["q6"]['x'] = ['x', 'L', 6];
+      tabla["q6"]['y'] = ['y', 'L', 6];
+      tabla["q6"]['a'] = ['a', 'L', 6];
+      tabla["q6"]['Δ'] = ['Δ', 'R', 5];
+      
+      tabla["q7"]['x'] = ['a', 'L', 7];
+      tabla["q7"]['y'] = ['b', 'L', 7];
+      tabla["q7"]['Δ'] = ['Δ', 'R', 4];
+
+      
+      tabla["q10"] = "aceptar";
+      //debugger;
+      let palabra = input;
+      if (palabra == undefined) palabra = "";
+      console.log("Palabra: ", palabra);
+      cinta = [];
+      cinta.push('Δ', 'Δ', 'Δ');
+      cinta.push(...palabra.split(''));
+      cinta.push('Δ', 'Δ', 'Δ');
+      let valorTabla = '';
+      let apuntador = 3;
+      let estado = "q0";
+      valorTabla = tabla[estado][cinta[apuntador]];
+      let control = 0;
+      console.log(cinta,cinta[apuntador], estado);
+      while (valorTabla != "aceptar") {
+        estado = "q" + valorTabla[2];
+        cinta[apuntador] = valorTabla[0];
+        if (valorTabla[1] === "L") apuntador--;
+        else if (valorTabla[1] === "R") apuntador++;
+        else if (valorTabla[1] === "S") apuntador = apuntador;
+        else return false;
+        console.log(cinta,cinta[apuntador], estado);
+        if (tabla[estado] === "aceptar") valorTabla = "aceptar";
+        else valorTabla = tabla[estado][cinta[apuntador]];
+      }
+      return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function reverse(s) {
+      return s.split("").reverse().join("");
+
+    }
+    function borrar1() {
+      var inputPalabra = document.getElementById("input1");
+      var inputBoleano = document.getElementById("output1");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+      analisis();
+    }
+    function borrarComprobacion() {
+      var inputBoleano = document.getElementById("output1");
+      inputBoleano.value = "";
+    }
+  </script>
+</body>
+
+</html>
+<style>
+  #label_cinta {
+    width: 100%;
+    text-align: center;
+  }
+
+  #cinta1 {
+    text-align: center;
+  }
+</style>

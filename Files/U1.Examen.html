@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <title>Examen © López Reyes</title>
+</head>
+
+<body class="">
+  <script src="https://kit.fontawesome.com/23bddc577d.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+
+
+
+  <div class="container">
+    <div class="row row-cols-2">
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Automata</label>
+          <input type="text" class="form-control" id="input1" aria-describedby="" placeholder="Introduzca autómata"
+            value="while rgb_rojo2 > 10 && negr_7 <= 21 do color:= -56.9+5.4/100.7;" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Expresion regular</label>
+          <input type="text" class="form-control" id="expresion1" aria-describedby="" placeholder="Introduzca expresion"
+            value="while [expresion] do [var]:= [exp_ari];" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputPassword1">Comprobación</label>
+          <input type="text" class="form-control" id="output1" readonly
+            placeholder="Aqui se mostraran los resultados" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"><button onclick="funcion1()" class="btn btn-primary" id="btn1">Comprobar</button>
+        <button type="button" class="btn btn-danger" id="borrar1" onclick="borrar1()">Borrar</button>
+      </div>
+      <div class="col"></div>
+      <div class="col"><button type="button" class="btn btn-secondary" id="borrar1"
+          onclick="borrarComprobacion()">Borrar</button>
+      </div>
+    </div>
+    <pre>
+      <code>
+        while a <> 5 do variable:= -3/6*4+2; => Cadena aceptada
+        variable:= -3/6*4+2; => Cadena NO aceptada
+        while a<=100 && abc500==500 do variable:= -2.4/5*4; => Cadena aceptada
+      </code>
+    </pre>
+  
+    <div class="card">
+      <div class="card-body">
+        © 2022 Luis Mario López Reyes
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  
+
+
+
+
+  <!--  -->
+
+
+  <script>
+    document.querySelector("#input1").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn1").click();
+      if (event.key === "Escape") document.querySelector("#borrar1").click();
+      event.preventDefault();
+    });
+  </script>
+
+
+  <script>
+
+    let letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    //let letrasExpresion = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+
+
+    let letrasPrograma2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_'];
+    let letrasMinusculas = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    let letrasMayusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    function checarExpresion(palabra) {
+      var cuadro = new Array(2);
+      cuadro[1] = new Array(2);
+      cuadro[2] = new Array(2);
+      cuadro[3] = new Array(2);
+      cuadro[4] = new Array(2);
+
+      cuadro[1]['letra'] = 2;
+      cuadro[1]['U'] = 'error';
+      cuadro[1]['signo'] = 'error';
+      cuadro[1]['FDC'] = 'error';
+
+      cuadro[2]['letra'] = 2;
+      cuadro[2]['U'] = 4;
+      cuadro[2]['signo'] = 3;
+      cuadro[2]['FDC'] = 'aceptar';
+
+      cuadro[3]['letra'] = 2;
+      cuadro[3]['U'] = 4;
+      cuadro[3]['signo'] = 'error';
+      cuadro[3]['FDC'] = 'aceptar';
+
+      cuadro[4]['letra'] = 2;
+      cuadro[4]['U'] = 'error';
+      cuadro[4]['signo'] = 'error';
+      cuadro[4]['FDC'] = 'error';
+      //var palabra = document.getElementById('palabra1').value;
+      var boleano = document.getElementById('boleano1');
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      let control = 0;
+      do {
+        control++;
+        if (control > 500) { console.log("FATAL ERROR "); return false; }
+        caracter = palabra.charAt(contador);
+        if (letrasMinusculas.includes(caracter)) caracter = 'letra';
+        // switch (caracter) {
+        //   case '':
+        //     entrada = 'FDC';
+        //     break;
+        //   case 'letra':
+        //     entrada = 'letra';
+        //     break;
+        //   case '*':
+        //     entrada = 'signo';
+        //     break;
+        //   case '+':
+        //     entrada = 'signo';
+        //     break;
+        //   case 'U':
+        //     entrada = 'U';
+        //     break;
+
+        // }
+        try {
+          estado = cuadro[estado][caracter];
+        } catch (error) {
+          console.log(error);
+        }
+        // estado = cuadro[estado][entrada];
+        // if (estado == 'error') { boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        if (estado == 'error') return false;
+        contador++;
+      } while (estado != 'aceptar');
+      // boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada';
+      return true;
+    }
+    function funcion1() {
+      let palabra = '';
+      //Este es el input de la respuesta final
+      var boleano = document.getElementById('output1');
+      palabra = document.getElementById('input1').value;
+      //checarExp(palabra); return 0;
+
+      //if (palabra.match(' ')) { boleano.value = "La cadena contiene espacios en blanco"; return 0; }
+      let expresion = document.getElementById('expresion1').value;
+      //Checo si la expresion realmente es una expresion con un automata
+      //if (!checarExpresion(expresion)) { boleano.value = "Expresion invalida"; return 0; }
+      let expresiones = expresion.split("U");
+      let aceptado = false;
+      expresiones.forEach(element => {
+        if (validar(element, palabra)) aceptado = true;
+        console.log(aceptado,palabra);
+      });
+      
+
+      //Mando a mostrar si coinciido al menos una vez
+      boleano.value = aceptado ? "Cadena aceptada" : "Cadena no aceptada";
+    }
+
+
+    function validar(expresion, palabra) {
+
+      let contadorPalabra = 0, contadorExpresion = 0;
+      let caracterPalabra = '', caracterExpresion = '';
+      //No aceptamos palabras con espacios
+      //if (palabra.match(' ')) { return false; }
+      let control = 0;
+      do {
+        //debugger;
+        caracterPalabra = palabra[contadorPalabra];
+        caracterExpresion = expresion[contadorExpresion];
+        console.log("Caracter palabra ", caracterPalabra, " Caracter expresion ", caracterExpresion, 'Cadena Length ', palabra.length, ' Contador palabra ', contadorPalabra);
+        let stringCorchetes = "", stringExpresionEsp = "";
+        control++;
+        if (control > 500) { console.log("FATAL ERROR "); return false; }
+        if (expresion[contadorExpresion + 1] == "*" || expresion[contadorExpresion + 1] == "+") {
+          if (expresion[contadorExpresion + 1] === "*") {
+            //Mientras este el caracter, ir recorriendo la palabra si coincide con ese caracter hasta que deje de coincidir
+            while (palabra[contadorPalabra] == expresion[contadorExpresion]) {
+              contadorPalabra++;
+            };
+          }
+          else if (expresion[contadorExpresion + 1] === "+") {
+            //En este si manda error porque al ser + debe estar minimo una vez
+            if (palabra[contadorPalabra] != expresion[contadorExpresion]) { return false; }
+            while (palabra[contadorPalabra] == expresion[contadorExpresion]) {
+              contadorPalabra++;
+            };
+          }
+          contadorExpresion++;/*Se aumenta el contador de la expresion para no tener la necesidad de volver a revisar el signo*/
+        }
+        else if (expresion[contadorExpresion] === "[") {
+          stringCorchetes += "[";
+          while (expresion[contadorExpresion] != "]") {
+            contadorExpresion++;
+            if (expresion[contadorExpresion - 1] == undefined) { console.log('Error caracter invalido'); return false; }
+            stringCorchetes += expresion[contadorExpresion];
+
+          };
+          console.log(contadorPalabra);
+          switch (stringCorchetes) {
+            case '[expresion]':
+              stringExpresionEsp += palabra[contadorPalabra];
+              //debugger;
+              while (!(palabra[contadorPalabra + 1] === " " && palabra[contadorPalabra + 2] === "d" && palabra[contadorPalabra + 3] === "o" && palabra[contadorPalabra + 4] === " ")) {
+                contadorPalabra++;
+
+                caracterPalabra = palabra[contadorPalabra];
+                caracterExpresion = expresion[contadorExpresion];
+
+                if (palabra[contadorPalabra - 1] == undefined) { console.log('Error caracter invalido'); return false; }
+                stringExpresionEsp += palabra[contadorPalabra];
+
+              };
+              console.log(stringExpresionEsp);
+              //debugger;
+              if (!checarExp(stringExpresionEsp)) return false;
+              contadorPalabra++;
+              break;
+            case '[var]':
+              //debugger;
+              stringExpresionEsp += palabra[contadorPalabra];
+              while (!(palabra[contadorPalabra + 1] === ":" && palabra[contadorPalabra + 2] === "=")) {
+                contadorPalabra++;
+
+                caracterPalabra = palabra[contadorPalabra];
+                caracterExpresion = expresion[contadorExpresion];
+
+                if (palabra[contadorPalabra - 1] == undefined) { console.log('Error caracter invalido'); return false; }
+                stringExpresionEsp += palabra[contadorPalabra];
+
+              };
+              console.log(stringExpresionEsp);
+              //debugger;
+              if (!checarVar(stringExpresionEsp)) return false;
+              if(stringExpresionEsp.substr(-1)!=' ') contadorPalabra++;
+              break;
+            case '[exp_ari]':
+              //debugger;
+              stringExpresionEsp += palabra[contadorPalabra];
+              while (palabra[contadorPalabra + 1] != ";") {
+                contadorPalabra++;
+
+                caracterPalabra = palabra[contadorPalabra];
+                caracterExpresion = expresion[contadorExpresion];
+
+                if (palabra[contadorPalabra - 1] == undefined) { console.log('Error caracter invalido'); return false; }
+                stringExpresionEsp += palabra[contadorPalabra];
+
+              };
+              console.log(stringExpresionEsp);
+              //debugger;
+              if (!checarExpAri(stringExpresionEsp)) return false;
+              contadorPalabra++;
+              break;
+            default:
+
+              return false;
+              break;
+          }
+        }
+        else {
+          //Si es letra sola, solamente valido que este la letra, sino, mando error
+          if (palabra[contadorPalabra] != expresion[contadorExpresion]) return false;
+          contadorPalabra++;
+        }
+        contadorExpresion++;
+      } while (contadorExpresion < expresion.length);
+      //} while (palabra[contadorPalabra]!=";");
+      console.log(contadorPalabra, palabra.length);
+      return contadorPalabra == palabra.length;
+    }
+
+
+
+
+
+
+
+    function checarExp(palabra) {
+      var cuadro = new Array(2);
+      cuadro[1] = new Array(2);
+      cuadro[2] = new Array(2);
+      cuadro[3] = new Array(2);
+      cuadro[4] = new Array(2);
+      cuadro[5] = new Array(2);
+      cuadro[6] = new Array(2);
+      cuadro[7] = new Array(2);
+      cuadro[8] = new Array(2);
+      cuadro[9] = new Array(2);
+      cuadro[10] = new Array(2);
+      cuadro[11] = new Array(2);
+      cuadro[12] = new Array(2);
+      cuadro[13] = new Array(2);
+
+      cuadro[1]['letra'] = 2;
+      cuadro[1]['digito'] = 'error';
+      cuadro[1]['_'] = 'error';
+      cuadro[1]['<'] = 'error';
+      cuadro[1]['>'] = 'error';
+      cuadro[1]['='] = 'error';
+      cuadro[1][' '] = 6;
+      cuadro[1]['FDC'] = 'error';
+      cuadro[1]['&'] = 'error';
+      cuadro[1]['|'] = 'error';
+
+      cuadro[2]['letra'] = 2;
+      cuadro[2]['digito'] = 2;
+      cuadro[2]['_'] = 2;
+      cuadro[2]['<'] = 4;
+      cuadro[2]['>'] = 5;
+      cuadro[2]['='] = 8;
+      cuadro[2][' '] = 10;
+      cuadro[2]['FDC'] = 'error';
+      cuadro[3]['&'] = 'error';
+      cuadro[3]['|'] = 'error';
+
+      cuadro[3]['letra'] = 'error';
+      cuadro[3]['digito'] = 7;
+      cuadro[3]['_'] = 'error';
+      cuadro[3]['<'] = 'error';
+      cuadro[3]['>'] = 'error';
+      cuadro[3]['='] = 'error';
+      cuadro[3][' '] = 9;
+      cuadro[3]['FDC'] = 'error';
+      cuadro[3]['&'] = 'error';
+      cuadro[3]['|'] = 'error';
+
+      cuadro[4]['letra'] = 'error';
+      cuadro[4]['digito'] = 7;
+      cuadro[4]['_'] = 'error';
+      cuadro[4]['<'] = 'error';
+      cuadro[4]['>'] = 3;
+      cuadro[4]['='] = 3;
+      cuadro[4][' '] = 9;
+      cuadro[4]['FDC'] = 'error';
+      cuadro[4]['&'] = 'error';
+      cuadro[4]['|'] = 'error';
+
+      cuadro[5]['letra'] = 'error';
+      cuadro[5]['digito'] = 7;
+      cuadro[5]['_'] = 'error';
+      cuadro[5]['<'] = 'error';
+      cuadro[5]['>'] = 'error';
+      cuadro[5]['='] = 3;
+      cuadro[5][' '] = 9;
+      cuadro[5]['FDC'] = 'error';
+      cuadro[5]['&'] = 'error';
+      cuadro[5]['|'] = 'error';
+
+      cuadro[6]['letra'] = 2;
+      cuadro[6]['digito'] = 'error';
+      cuadro[6]['_'] = 'error';
+      cuadro[6]['<'] = 'error';
+      cuadro[6]['>'] = 'error';
+      cuadro[6]['='] = 'error';
+      cuadro[6][' '] = 'error';
+      cuadro[6]['FDC'] = 'error';
+      cuadro[6]['&'] = 'error';
+      cuadro[6]['|'] = 'error';
+
+      cuadro[7]['letra'] = 'error';
+      cuadro[7]['digito'] = 7;
+      cuadro[7]['_'] = 'error';
+      cuadro[7]['<'] = 'error';
+      cuadro[7]['>'] = 'error';
+      cuadro[7]['='] = 'error';
+      cuadro[7][' '] = 11;
+      cuadro[7]['FDC'] = 'aceptar'; // aceptacion
+      cuadro[7]['&'] = 12;
+      cuadro[7]['|'] = 13;
+
+      cuadro[8]['letra'] = 'error';
+      cuadro[8]['digito'] = 'error';
+      cuadro[8]['_'] = 'error';
+      cuadro[8]['<'] = 'error';
+      cuadro[8]['>'] = 'error';
+      cuadro[8]['='] = 3;
+      cuadro[8][' '] = 'error';
+      cuadro[8]['FDC'] = 'error';
+      cuadro[9]['&'] = 'error';
+      cuadro[9]['|'] = 'error';
+
+      cuadro[9]['letra'] = 'error';
+      cuadro[9]['digito'] = 7;
+      cuadro[9]['_'] = 'error';
+      cuadro[9]['<'] = 'error';
+      cuadro[9]['>'] = 'error';
+      cuadro[9]['='] = 'error';
+      cuadro[9][' '] = 'error';
+      cuadro[9]['FDC'] = 'error';
+      cuadro[9]['&'] = 'error';
+      cuadro[9]['|'] = 'error';
+
+      cuadro[10]['letra'] = 'error';
+      cuadro[10]['digito'] = 'error';
+      cuadro[10]['_'] = 'error';
+      cuadro[10]['<'] = 4;
+      cuadro[10]['>'] = 5;
+      cuadro[10]['='] = 8;
+      cuadro[10][' '] = 'error';
+      cuadro[10]['FDC'] = 'error';
+      cuadro[10]['&'] = 'error';
+      cuadro[10]['|'] = 'error';
+
+      cuadro[11]['letra'] = 'error';
+      cuadro[11]['digito'] = 'error';
+      cuadro[11]['_'] = 'error';
+      cuadro[11]['<'] = 'error';
+      cuadro[11]['>'] = 'error';
+      cuadro[11]['='] = 'error';
+      cuadro[11][' '] = 'error';
+      cuadro[11]['FDC'] = 'error';
+      cuadro[11]['&'] = 12;
+      cuadro[11]['|'] = 13;
+
+      cuadro[12]['letra'] = 'error';
+      cuadro[12]['digito'] = 'error';
+      cuadro[12]['_'] = 'error';
+      cuadro[12]['<'] = 'error';
+      cuadro[12]['>'] = 'error';
+      cuadro[12]['='] = 'error';
+      cuadro[12][' '] = 'error';
+      cuadro[12]['FDC'] = 'error';
+      cuadro[12]['&'] = 1;
+      cuadro[12]['|'] = 'error';
+
+      cuadro[13]['letra'] = 'error';
+      cuadro[13]['digito'] = 'error';
+      cuadro[13]['_'] = 'error';
+      cuadro[13]['<'] = 'error';
+      cuadro[13]['>'] = 'error';
+      cuadro[13]['='] = 'error';
+      cuadro[13][' '] = 'error';
+      cuadro[13]['FDC'] = 'error';
+      cuadro[13]['&'] = 'error';
+      cuadro[13]['|'] = 1;
+      //var palabra = document.getElementById('palabra1').value;
+      var output = document.getElementById('output1');
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      let control = 0;
+      do {
+        //debugger;
+        control++;
+        if (control > 500) { console.log("FATAL ERROR "); return false; }
+        caracter = palabra.charAt(contador);
+        entrada = caracter;
+        if (letrasMinusculas.includes(caracter)) caracter = 'letra';
+        else if (digitos.includes(caracter)) caracter = 'digito';
+        switch (caracter) {
+          case '':
+            entrada = 'FDC';
+            break;
+          case 'letra':
+            entrada = 'letra';
+            break;
+          case 'digito':
+            entrada = 'digito';
+            break;
+
+
+        }
+        try {
+          estado = cuadro[estado][entrada];
+        } catch (error) {
+          console.log(error);
+          return false;
+        }
+        // estado = cuadro[estado][entrada];
+        // if (estado == 'error') { boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        if (estado == 'error') return false;
+        contador++;
+      } while (estado != 'aceptar');
+      // boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada';
+      //console.log("CONSEGUIDO");
+      return true;
+    }
+    function checarVar(palabra) {
+      var cuadro = new Array(2);
+      cuadro[1] = new Array(2);
+      cuadro[2] = new Array(2);
+      cuadro[3] = new Array(2);
+
+      cuadro[1]['letra'] = 2;
+      cuadro[1]['digito'] = 'error';
+      cuadro[1]['_'] = 3;
+      cuadro[1]['FDC'] = 'error';
+
+      cuadro[2]['letra'] = 2;
+      cuadro[2]['digito'] = 2;
+      cuadro[2]['_'] = 2;
+      //cuadro[2][' '] = 'aceptar';
+      cuadro[2]['FDC'] = 'aceptar';
+
+      cuadro[3]['letra'] = 2;
+      cuadro[3]['digito'] = 'error';
+      cuadro[3]['_'] = 'error';
+      cuadro[3]['FDC'] = 'error';
+
+
+
+      var output = document.getElementById('output1');
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      let control = 0;
+      do {
+        //debugger;
+        control++;
+        if (control > 500) { console.log("FATAL ERROR "); return false; }
+        caracter = palabra.charAt(contador);
+        entrada = caracter;
+        if (letras.includes(caracter)) caracter = 'letra';
+        else if (digitos.includes(caracter)) caracter = 'digito';
+        switch (caracter) {
+          case '':
+            entrada = 'FDC';
+            break;
+          case 'letra':
+            entrada = 'letra';
+            break;
+          case 'digito':
+            entrada = 'digito';
+            break;
+
+
+        }
+        try {
+          estado = cuadro[estado][entrada];
+        } catch (error) {
+          console.log(estado,entrada);
+          console.log(error);
+          return false;
+        }
+        // estado = cuadro[estado][entrada];
+        // if (estado == 'error') { boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        if (estado == 'error') return false;
+        contador++;
+      } while (estado != 'aceptar');
+      // boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada';
+      //console.log("CONSEGUIDO");
+      return true;
+    }
+    function checarExpAri(palabra) {
+      var cuadro = new Array(2);
+      cuadro[1] = new Array(2);
+      cuadro[2] = new Array(2);
+      cuadro[3] = new Array(2);
+      cuadro[4] = new Array(2);
+      cuadro[5] = new Array(2);
+      cuadro[6] = new Array(2);
+      cuadro[7] = new Array(2);
+      cuadro[8] = new Array(2);
+      cuadro[9] = new Array(2);
+
+      cuadro[1]['digito'] = 3;
+      cuadro[1]['.'] = 'error';
+      cuadro[1]['+'] = 'error';
+      cuadro[1]['-'] = 2;
+      cuadro[1]['*'] = 'error';
+      cuadro[1]['/'] = 'error';
+      cuadro[1]['FDC'] = 'error';
+
+      cuadro[2]['digito'] = 3;
+      cuadro[2]['.'] = 'error';
+      cuadro[2]['+'] = 'error';
+      cuadro[2]['-'] = 'error';
+      cuadro[2]['*'] = 'error';
+      cuadro[2]['/'] = 'error';
+      cuadro[2]['FDC'] = 'error';
+
+      cuadro[3]['digito'] = 3;
+      cuadro[3]['.'] = 4;
+      cuadro[3]['+'] = 6;
+      cuadro[3]['-'] = 6;
+      cuadro[3]['*'] = 6;
+      cuadro[3]['/'] = 6;
+      cuadro[3]['FDC'] = 'error';
+
+      cuadro[4]['digito'] = 5;
+      cuadro[4]['.'] = 'error';
+      cuadro[4]['+'] = 'error';
+      cuadro[4]['-'] = 'error';
+      cuadro[4]['*'] = 'error';
+      cuadro[4]['/'] = 'error';
+      cuadro[4]['FDC'] = 'error';
+
+      cuadro[5]['digito'] = 5;
+      cuadro[5]['.'] = 'error';
+      cuadro[5]['+'] = 6;
+      cuadro[5]['-'] = 6;
+      cuadro[5]['*'] = 6;
+      cuadro[5]['/'] = 6;
+      cuadro[5]['FDC'] = 'error';
+
+      cuadro[6]['digito'] = 7;
+      cuadro[6]['.'] = 'error';
+      cuadro[6]['+'] = 'error';
+      cuadro[6]['-'] = 'error';
+      cuadro[6]['*'] = 'error';
+      cuadro[6]['/'] = 'error';
+      cuadro[6]['FDC'] = 'error';
+
+      cuadro[7]['digito'] = 7;
+      cuadro[7]['.'] = 8;
+      cuadro[7]['+'] = 6;
+      cuadro[7]['-'] = 6;
+      cuadro[7]['*'] = 6;
+      cuadro[7]['/'] = 6;
+      cuadro[7]['FDC'] = 'aceptar';
+
+      cuadro[8]['digito'] = 9;
+      cuadro[8]['.'] = 'error';
+      cuadro[8]['+'] = 'error';
+      cuadro[8]['-'] = 'error';
+      cuadro[8]['*'] = 'error';
+      cuadro[8]['/'] = 'error';
+      cuadro[8]['FDC'] = 'error';
+
+      cuadro[9]['digito'] = 9;
+      cuadro[9]['.'] = 'error';
+      cuadro[9]['+'] = 6;
+      cuadro[9]['-'] = 6;
+      cuadro[9]['*'] = 6;
+      cuadro[9]['/'] = 6;
+      cuadro[9]['FDC'] = 'aceptar';
+      //var palabra = document.getElementById('palabra1').value;
+      var output = document.getElementById('output1');
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      let control = 0;
+      do {
+        //debugger;
+        control++;
+        if (control > 500) { console.log("FATAL ERROR "); return false; }
+        caracter = palabra.charAt(contador);
+        entrada = caracter;
+        //if (letrasMinusculas.includes(caracter)) caracter = 'letra';
+        if (digitos.includes(caracter)) caracter = 'digito';
+        switch (caracter) {
+          case '':
+            entrada = 'FDC';
+            break;
+          case '+':
+            entrada = '+';
+            break;
+          case '-':
+            entrada = '-';
+            break;
+          case '*':
+            entrada = '*';
+            break;
+          case '/':
+            entrada = '/';
+            break;
+          case 'digito':
+            entrada = 'digito';
+            break;
+
+
+        }
+        try {
+          estado = cuadro[estado][entrada];
+        } catch (error) {
+          console.log(estado,entrada,control);
+          console.log(error);
+          return false;
+        }
+        // estado = cuadro[estado][entrada];
+        // if (estado == 'error') { boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        if (estado == 'error') return false;
+        contador++;
+      } while (estado != 'aceptar');
+      // boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada';
+      //console.log("CONSEGUIDO");
+      return true;
+    }
+
+
+
+
+
+
+    function borrar1() {
+      var inputPalabra = document.getElementById("input1");
+      var inputBoleano = document.getElementById("output1");
+      //var inputExpresion = document.getElementById("expresion1");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+      //inputExpresion.value = "";
+    }
+    function borrarComprobacion() {
+      var inputBoleano = document.getElementById("output1");
+      inputBoleano.value = "";
+    }
+
+  </script>
+</body>
+
+</html>

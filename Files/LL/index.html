@@ -1,0 +1,525 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <title>Autómatas © López Reyes</title>
+</head>
+
+<body class="container">
+  <script src="https://kit.fontawesome.com/23bddc577d.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+
+
+
+  <div class="container">
+    <div class="row row-cols-2">
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Automata</label>
+          <input type="text" class="form-control" id="input1" aria-describedby="" placeholder="Introduzca autómata" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputPassword1">Comprobación</label>
+          <input type="text" class="form-control" id="output1" readonly
+            placeholder="Aqui se mostraran los resultados" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"><button onclick="gramaticaIndependiente()" class="btn btn-primary" id="btn1">Comprobar</button>
+        <button type="button" class="btn btn-danger" id="borrar1" onclick="borrar1()">Borrar</button>
+      </div>
+      <div class="col"></div>
+      <div class="col"><button type="button" class="btn btn-secondary" id="borrar1"
+          onclick="borrarComprobacion()">Borrar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        © 2022 Luis Mario López Reyes
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <!-- <pre>
+    <code>
+      3500 => true
+      := => true
+      abc500 => true
+      edad1000 => true
+    </code>
+  </pre> -->
+
+
+
+
+
+  <!--  -->
+
+
+  <script>
+    document.querySelector("#input1").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn1").click();
+      if (event.key === "Escape") document.querySelector("#borrar1").click();
+      event.preventDefault();
+    });
+  </script>
+
+
+  <script>
+
+    let letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let letrasExamen = ['a', 'b', 'c', 'e', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'p', 'q', 's', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+
+
+
+    let letrasPrograma2 = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '_'];
+    let letrasMinusculas = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    let letrasMayusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    // window.onload = (event) => {
+      function gramaticaIndependiente()
+      {
+        var output = document.getElementById('output1');
+        checarGramaticaIndependiente()? output.value="Cadena aceptada":  output.value="Cadena no aceptada";
+      }
+      function checarGramaticaIndependiente() {
+      //console.log(event);
+      var tabla = new Array(2);
+      tabla['S'] = new Array(2);
+      tabla['M'] = new Array(2);
+      tabla['N'] = new Array(2);
+
+      tabla['S']['a'] = 'error';
+      tabla['S']['b'] = 'error';
+      tabla['S']['z'] = 'zMNz';
+      tabla['S']['FDC'] = 'error';
+
+      tabla['M']['a'] = 'aMa';
+      tabla['M']['b'] = 'error';
+      tabla['M']['z'] = 'z';
+      tabla['M']['FDC'] = 'error';
+
+      tabla['N']['a'] = 'error';
+      tabla['N']['b'] = 'bNb';
+      tabla['N']['z'] = 'z';
+      tabla['N']['FDC'] = 'error';
+
+      // tabla['S'] = new Array(2);
+      // tabla['A'] = new Array(2);
+      // tabla['C'] = new Array(2);
+
+      // tabla['S'][''] = 'AC';
+
+      // tabla['A']['aa'] = 'aAb';
+      // tabla['A']['ab'] = 'ab';
+
+      // tabla['C']['bb'] = 'bCc';
+      // tabla['C']['bc'] = 'bc';
+
+      let pila = '', cima = '';
+      pila += '#';
+      pila += 'S';
+
+      let cadena = "abbbcc";
+      cadena = document.getElementById('input1').value;
+      let simbolo = '';
+      simbolo = cadena[0];
+      let control = 0, contador = 0;
+      let terminal = false, noTerminal = false;
+      //Terminal -> Minuscula
+      //No terminal -> Mayuscula
+      let comodin = '';
+      while (pila.length > 0) {
+        console.log(pila,cadena,simbolo,contador);
+        //debugger;
+        cimaTipo = null;
+        control++; if (control > 500) { console.log('Error fatal'); return false; }
+        cima = pila.charAt(pila.length - 1);
+        if (letrasMinusculas.includes(pila[pila.length - 1])) cimaTipo = true;
+        else if (letrasMayusculas.includes(pila[pila.length - 1])) cimaTipo = false;
+        switch (cimaTipo) {
+          case true://si es terminal
+            if (pila[pila.length - 1] == simbolo) {
+              pila = pila.slice(0, -1);
+              contador++;
+              simbolo = cadena[contador];
+            } else return false;
+            break;
+          case false://no es terminal
+            //comodin = tabla['S']['z'];
+            try {
+              if (pila[pila.length - 1] == 'S' && tabla['S'][''].length > 0) {
+                // console.log('eureka');return 0;
+                pila = pila.replace(pila[pila.length - 1], reverse(tabla['S']['']));
+                break;
+
+              }
+            } catch (error) {
+              //console.log('S si incluye un no terminal');
+            }
+
+
+
+            //comodin = tabla[pila[pila.length - 1]][simbolo];
+            if (tabla[pila[pila.length - 1][simbolo]] != 'error') {
+              // pila = pila.slice(0, -1);
+              // pila += reverse(comodin);
+              //debugger;
+
+              try {
+                pila = pila.replace(pila[pila.length - 1], reverse(tabla[pila[pila.length - 1]][simbolo]));
+              } catch (error) {
+                contador++;
+                simbolo+=cadena[contador];
+                pila = pila.replace(pila[pila.length - 1], reverse(tabla[pila[pila.length - 1]][simbolo]));
+                contador--;
+                simbolo = simbolo.slice(0,-1);
+              }
+
+
+            } else return false;
+            break;
+          default:
+            //console.log("Null error");
+            break;
+        }
+        if (pila == '#') { console.log(pila); pila = pila.slice(0, -1); console.log(pila); }
+      }
+      console.log("Contador ",contador,"Longitud de la cadena: ",cadena.length);
+      return contador == cadena.length ? true : false;
+
+
+    };
+
+    function checarExpresion(palabra) {
+      var cuadro = new Array(2);
+      cuadro[1] = new Array(2);
+      cuadro[2] = new Array(2);
+      cuadro[3] = new Array(2);
+      cuadro[4] = new Array(2);
+
+      cuadro[1]['letra'] = 2;
+      cuadro[1]['U'] = 'error';
+      cuadro[1]['signo'] = 'error';
+      cuadro[1]['FDC'] = 'error';
+
+      cuadro[2]['letra'] = 2;
+      cuadro[2]['U'] = 4;
+      cuadro[2]['signo'] = 3;
+      cuadro[2]['FDC'] = 'aceptar';
+
+      cuadro[3]['letra'] = 2;
+      cuadro[3]['U'] = 4;
+      cuadro[3]['signo'] = 'error';
+      cuadro[3]['FDC'] = 'aceptar';
+
+      cuadro[4]['letra'] = 2;
+      cuadro[4]['U'] = 'error';
+      cuadro[4]['signo'] = 'error';
+      cuadro[4]['FDC'] = 'error';
+      //var palabra = document.getElementById('palabra1').value;
+      var boleano = document.getElementById('boleano1');
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      do {
+        caracter = palabra.charAt(contador);
+        if (letrasMinusculas.includes(caracter)) caracter = 'letra';
+        switch (caracter) {
+          case '':
+            entrada = 'FDC';
+            break;
+          case 'letra':
+            entrada = 'letra';
+            break;
+          case '*':
+            entrada = 'signo';
+            break;
+          case '+':
+            entrada = 'signo';
+            break;
+          case 'U':
+            entrada = 'U';
+            break;
+          default:
+            //boleano.value = estado == 'aceptar'; return 0;
+            // boleano.value = 'La cadena contiene espacios o caracteres inválidos'; return 0;
+            return false;
+            break;
+        }
+        //console.log(estado, ' ', entrada, caracter);
+        estado = cuadro[estado][entrada];
+        // if (estado == 'error') { boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        if (estado == 'error') return false;
+        contador++;
+      } while (estado != 'aceptar');
+      // boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada';
+      return true;
+    }
+    function automataTabla() {
+      var cuadro = new Array(2);
+      cuadro[1] = new Array(2);
+      cuadro[2] = new Array(2);
+      cuadro[3] = new Array(2);
+      cuadro[4] = new Array(2);
+      cuadro[5] = new Array(2);
+      cuadro[6] = new Array(2);
+      cuadro[7] = new Array(2);
+      cuadro[8] = new Array(2);
+      cuadro[9] = new Array(2);
+      cuadro[10] = new Array(2);
+      cuadro[11] = new Array(2);
+      cuadro[12] = new Array(2);
+      cuadro[13] = new Array(2);
+      cuadro[14] = new Array(2);
+      cuadro[15] = new Array(2);
+      cuadro[16] = new Array(2);
+      cuadro[17] = new Array(2);
+      cuadro[18] = new Array(2);
+      cuadro[19] = new Array(2);
+      cuadro[20] = new Array(2);
+      cuadro[21] = new Array(2);
+      cuadro[22] = new Array(2);
+      cuadro[23] = new Array(2);
+      cuadro[24] = new Array(2);
+      cuadro[25] = new Array(2);
+      cuadro[26] = new Array(2);
+      cuadro[27] = new Array(2);
+
+
+      cuadro[1]['f'] = 2;
+      cuadro[2]['o'] = 3;
+      cuadro[3]['r'] = 4;
+      cuadro[4][' '] = 5;
+      cuadro[5]['letra'] = 5;
+      cuadro[5]['numero'] = 5;
+      cuadro[5]['_'] = 5;
+      cuadro[5][' '] = 6;
+      cuadro[6][':'] = 7;
+      cuadro[7]['='] = 8;
+      cuadro[8][' '] = 9;
+      cuadro[9]['numero'] = 10;
+      cuadro[10]['numero'] = 10;
+      cuadro[10][' '] = 11;
+      cuadro[11]['t'] = 12;
+      cuadro[12]['o'] = 13;
+      cuadro[13][' '] = 14;
+      cuadro[14]['numero'] = 15;
+      cuadro[15]['numero'] = 15;
+      cuadro[15][' '] = 16;
+      cuadro[16]['d'] = 17;
+      cuadro[17]['o'] = 18;
+      cuadro[18][' '] = 19;
+      cuadro[19]['letra'] = 19;
+      cuadro[19]['numero'] = 19;
+      cuadro[19]['_'] = 19;
+      cuadro[19][' '] = 20;
+      cuadro[20][':'] = 21;
+      cuadro[21]['='] = 22;
+      cuadro[22]['numero'] = 23;
+      cuadro[22]['+'] = 24;
+      cuadro[22]['-'] = 24;
+      cuadro[24]['numero'] = 23;
+      cuadro[23]['+'] = 26;
+      cuadro[23]['-'] = 26;
+      cuadro[23]['*'] = 26;
+      cuadro[23]['/'] = 26;
+      cuadro[26]['numero'] = 23;
+      cuadro[23]['.'] = 25;
+      cuadro[25]['numero'] = 23;
+      cuadro[23]['numero'] = 23;
+      cuadro[23][';'] = 'aceptar';
+      //var palabra = document.getElementById('palabra1').value;
+      var input = document.getElementById('input1').value;
+      var output = document.getElementById('output1').value;
+      let estado = 1;
+      let contador = 0;
+      let caracter = '';
+      let control = 0;
+      do {
+        control++;
+        //debugger;
+        if (control > 500) { output = "Fatal error"; return 0; }
+        caracter = input[contador];
+        if (letrasExamen.includes(caracter)) caracter = 'letra';
+        if (digitos.includes(caracter)) caracter = 'numero';
+        // switch (caracter) {
+        //   case 'numero':
+        //     entrada = 'numero';
+        //     break;
+        //   case 'letra':
+        //     entrada = 'letra';
+        //     break;
+        //   case '*':
+        //     entrada = 'signo';
+        //     break;
+        //   case '+':
+        //     entrada = 'signo';
+        //     break;
+        //   case 'U':
+        //     entrada = 'U';
+        //     break;
+
+        // }
+        try {
+          estado = cuadro[estado][caracter];
+        } catch (error) {
+          console.log("Error ", error);
+          //estado = 'error';
+
+        }
+
+        // if (estado == 'error') { boleano.value = estado == 'aceptar' ? 'Cadena aceptada' : 'Cadena NO aceptada'; return 0; }
+        if (estado == 'error') { console.log("ERROR"); output.value = "Cadena NO aceptada"; return false; }
+        contador++;
+      } while (estado != 'aceptar');
+      console.log("Cadena aceptada");
+      output.value = "Cadena aceptada";
+    }
+    function funcion1() {
+      let palabra = '';
+      //Este es el input de la respuesta final
+      var boleano = document.getElementById('boleano1');
+      palabra = document.getElementById('palabra1').value;
+      if (palabra.match(' ')) { boleano.value = "La cadena contiene espacios en blanco"; return 0; }
+      let expresion = document.getElementById('expresion1').value;
+      //Checo si la expresion realmente es una expresion con un automata
+      if (!checarExpresion(expresion)) { boleano.value = "Expresion invalida"; return 0; }
+      let expresiones = expresion.split("U");
+
+      let contadorValidas = 0;
+      expresiones.forEach(element => {
+        if (validar(element, palabra)) contadorValidas++;
+      });//Si almenos uno responde de manera positiva significa que funciona
+      console.log("Cadena valida en ", contadorValidas, ' expresiones');
+      //Mando a mostrar si coinciido al menos una vez
+      boleano.value = contadorValidas > 0 ? "Cadena aceptada" : "Cadena no aceptada";
+    }
+
+
+    function validar(expresion, palabra) {
+
+      let contadorPalabra = 0, contadorExpresion = 0;
+      let caracterPalabra = '', caracterGramatica = '';
+      //No aceptamos palabras con espacios
+      if (palabra.match(' ')) { return false; }
+      do {
+        //Validacion si se encuentra un signo despues del caracter inicial
+        if (expresion[contadorExpresion + 1] == "*" || expresion[contadorExpresion + 1] == "+") {
+          if (expresion[contadorExpresion + 1] === "*") {
+            //Mientras este el caracter, ir recorriendo la palabra si coincide con ese caracter hasta que deje de coincidir
+            while (palabra[contadorPalabra] == expresion[contadorExpresion]) {
+              contadorPalabra++;
+            };
+          }
+          else if (expresion[contadorExpresion + 1] === "+") {
+            //En este si manda error porque al ser + debe estar minimo una vez
+            if (palabra[contadorPalabra] != expresion[contadorExpresion]) { return false; }
+            while (palabra[contadorPalabra] == expresion[contadorExpresion]) {
+              contadorPalabra++;
+            };
+          }
+          contadorExpresion++;/*Se aumenta el contador de la expresion para no tener la necesidad de volver a revisar el signo*/
+        }
+        else {
+          //Si es letra sola, solamente valido que este la letra, sino, mando error
+          if (palabra[contadorPalabra] != expresion[contadorExpresion]) return false;
+          contadorPalabra++;
+        }
+        contadorExpresion++;
+      } while (contadorExpresion < expresion.length);
+      console.log(contadorPalabra, palabra.length);
+      return contadorPalabra == palabra.length;
+    }
+
+
+
+
+
+
+
+    function validarPRUEBA(expresion, palabra) {
+
+      let contadorPalabra = 0, contadorExpresion = 0;
+      let caracterPalabra = '', caracterGramatica = '';
+      //No aceptamos palabras con espacios
+      if (palabra.match(' ')) { return false; }
+      do {
+        //Validacion si se encuentra un signo despues del caracter inicial
+        if (expresion[contadorExpresion + 1] == "*" || expresion[contadorExpresion + 1] == "+") {
+          switch (expresion[contadorExpresion + 1]) {
+            case "*":
+              //Mientras este el caracter, ir recorriendo la palabra si coincide con ese caracter hasta que deje de coincidir
+              while (palabra[contadorPalabra] == expresion[contadorExpresion]) {
+                contadorPalabra++;
+              };
+              break;
+            case "+":
+              //En este si manda error porque al ser + debe estar minimo una vez
+              if (palabra[contadorPalabra] != expresion[contadorExpresion]) { return false; }
+              while (palabra[contadorPalabra] == expresion[contadorExpresion]) {
+                contadorPalabra++;
+              };
+              break;
+            default://Se supone que si se valido la expresion con su funcion automata este default nunca debe entrar, el programa se protege de que no entren cadenas vacias al cortar el while
+              break;
+          }
+          contadorExpresion++;
+        }
+        else {
+          //Si es letra sola, solamente valido que este la letra, sino, mando error
+          if (palabra[contadorPalabra] != expresion[contadorExpresion]) return false;
+          contadorPalabra++;
+        }
+        contadorExpresion++;
+      } while (contadorExpresion < expresion.length);
+      console.log(contadorPalabra, palabra.length);
+      return contadorPalabra == palabra.length;
+    }
+
+
+
+
+
+    function reverse(s) {
+      if(s==undefined)return undefined;
+      return s.split("").reverse().join("");
+    }
+
+    function borrar1() {
+      var inputPalabra = document.getElementById("input1");
+      var inputBoleano = document.getElementById("output1");
+      //var inputExpresion = document.getElementById("expresion1");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+      //inputExpresion.value = "";
+    }
+    function borrarComprobacion() {
+      var inputBoleano = document.getElementById("output1");
+      inputBoleano.value = "";
+    }
+
+  </script>
+</body>
+
+</html>
