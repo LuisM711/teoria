@@ -2,6 +2,9 @@
 <html>
 
 <head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <title>Autómatas © López Reyes</title>
@@ -97,15 +100,14 @@
     let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
     // window.onload = (event) => {
-      function gramaticaIndependiente()
-      {
-        var output = document.getElementById('output1');
-        
-	try{checarGramaticaIndependiente()? output.value="Cadena aceptada":  output.value="Cadena no aceptada";}catch(error){output.value="Cadena no aceptada";}
-      }
-      function checarGramaticaIndependiente() {
+    function gramaticaIndependiente() {
+      var output = document.getElementById('output1');
+
+      try { checarGramaticaIndependiente() ? output.value = "Cadena aceptada" : output.value = "Cadena no aceptada"; } catch (error) { output.value = "Cadena no aceptada"; }
+    }
+    function checarGramaticaIndependiente() {
       //console.log(event);
-	
+
       var tabla = new Array(2);
       //tabla['S'] = new Array(2);
       //tabla['M'] = new Array(2);
@@ -126,17 +128,17 @@
       //tabla['N']['z'] = 'z';
       //tabla['N']['FDC'] = 'error';
 
-       tabla['S'] = new Array(2);
-       tabla['A'] = new Array(2);
-       tabla['C'] = new Array(2);
+      tabla['S'] = new Array(2);
+      tabla['A'] = new Array(2);
+      tabla['C'] = new Array(2);
 
-       tabla['S'][''] = 'AC';
+      tabla['S'][''] = 'AC';
 
-       tabla['A']['aa'] = 'aAb';
-       tabla['A']['ab'] = 'ab';
+      tabla['A']['aa'] = 'aAb';
+      tabla['A']['ab'] = 'ab';
 
-       tabla['C']['bb'] = 'bCc';
-       tabla['C']['bc'] = 'bc';
+      tabla['C']['bb'] = 'bCc';
+      tabla['C']['bc'] = 'bc';
 
       let pila = '', cima = '';
       pila += '#';
@@ -144,7 +146,7 @@
 
       let cadena = "abbbcc";
       cadena = document.getElementById('input1').value;
-	if(cadena[0]!="a")return false;
+      if (cadena[0] != "a") return false;
       let simbolo = '';
       simbolo = cadena[0];
       let control = 0, contador = 0;
@@ -153,7 +155,7 @@
       //No terminal -> Mayuscula
       let comodin = '';
       while (pila.length > 0) {
-        console.log(pila,cadena,simbolo,contador);
+        console.log(pila, cadena, simbolo, contador);
         //debugger;
         cimaTipo = null;
         control++; if (control > 500) { console.log('Error fatal'); return false; }
@@ -193,10 +195,10 @@
                 pila = pila.replace(pila[pila.length - 1], reverse(tabla[pila[pila.length - 1]][simbolo]));
               } catch (error) {
                 contador++;
-                simbolo+=cadena[contador];
+                simbolo += cadena[contador];
                 pila = pila.replace(pila[pila.length - 1], reverse(tabla[pila[pila.length - 1]][simbolo]));
                 contador--;
-                simbolo = simbolo.slice(0,-1);
+                simbolo = simbolo.slice(0, -1);
               }
 
 
@@ -208,7 +210,7 @@
         }
         if (pila == '#') { console.log(pila); pila = pila.slice(0, -1); console.log(pila); }
       }
-      console.log("Contador ",contador,"Longitud de la cadena: ",cadena.length);
+      console.log("Contador ", contador, "Longitud de la cadena: ", cadena.length);
       return contador == cadena.length ? true : false;
 
 
@@ -505,7 +507,7 @@
 
 
     function reverse(s) {
-      	//if(s==undefined)return undefined;
+      //if(s==undefined)return undefined;
       return s.split("").reverse().join("");
     }
 

@@ -2,6 +2,9 @@
 <html>
 
 <head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <title>Examen © López Reyes</title>
@@ -63,7 +66,7 @@
         while a<=100 && abc500==500 do variable:= -2.4/5*4; => Cadena aceptada
       </code>
     </pre>
-  
+
     <div class="card">
       <div class="card-body">
         © 2022 Luis Mario López Reyes
@@ -75,7 +78,7 @@
 
 
 
-  
+
 
 
 
@@ -187,9 +190,9 @@
       let aceptado = false;
       expresiones.forEach(element => {
         if (validar(element, palabra)) aceptado = true;
-        console.log(aceptado,palabra);
+        console.log(aceptado, palabra);
       });
-      
+
 
       //Mando a mostrar si coinciido al menos una vez
       boleano.value = aceptado ? "Cadena aceptada" : "Cadena no aceptada";
@@ -271,7 +274,7 @@
               console.log(stringExpresionEsp);
               //debugger;
               if (!checarVar(stringExpresionEsp)) return false;
-              if(stringExpresionEsp.substr(-1)!=' ') contadorPalabra++;
+              if (stringExpresionEsp.substr(-1) != ' ') contadorPalabra++;
               break;
             case '[exp_ari]':
               //debugger;
@@ -568,7 +571,7 @@
         try {
           estado = cuadro[estado][entrada];
         } catch (error) {
-          console.log(estado,entrada);
+          console.log(estado, entrada);
           console.log(error);
           return false;
         }
@@ -703,7 +706,7 @@
         try {
           estado = cuadro[estado][entrada];
         } catch (error) {
-          console.log(estado,entrada,control);
+          console.log(estado, entrada, control);
           console.log(error);
           return false;
         }

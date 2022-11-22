@@ -2,6 +2,9 @@
 <html>
 
 <head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <title>Tabla de analisis LR © López Reyes</title>
@@ -28,7 +31,8 @@
       <div class="col">
         <div class="form-group">
           <label for="exampleInputEmail1">Palabra</label>
-          <input type="text" class="form-control" id="input1" aria-describedby="" placeholder="Introduzca palabra a verificar" value="zazabzbz"/>
+          <input type="text" class="form-control" id="input1" aria-describedby=""
+            placeholder="Introduzca palabra a verificar" value="zazabzbz" />
         </div>
       </div>
       <div class="col">
@@ -137,7 +141,7 @@
       let palabra = input;
       console.log("Palabra: ", palabra);
       let pila = [];
-      console.log("Pila",pila);
+      console.log("Pila", pila);
       let valorTabla = '';
       let contador = 0;
       let simboloEspecial = 1;
@@ -153,7 +157,7 @@
         //Esta linea no es necesaria, es para evitar errores si se presenta un fallo
         control++; if (control > 500) { console.log("fatal error"); return false; }
         //Mostrar datos de como va la pila y de cuanto queda como resto de la entrada
-        console.log("Pila",pila, "Resto de la entrada: " + palabra.substring(contador, palabra.length));
+        console.log("Pila", pila, "Resto de la entrada: " + palabra.substring(contador, palabra.length));
         //Si el primer caracter de la tabla es 'd' se entiende que es un desplazamiento
         if (tabla[simboloEspecial][simbolo].charAt(0) == "d") {
           //SI EL VALOR ES UN DESPLAZAMIENTO
@@ -206,12 +210,12 @@
         //Se calcula al final cual va ser el proximo valor de la tabla, aqui
         valorTabla = tabla[simboloEspecial][simbolo];
       }
-      console.log("Pila",pila, "Resto de la entrada: " + palabra.substring(contador, palabra.length));
+      console.log("Pila", pila, "Resto de la entrada: " + palabra.substring(contador, palabra.length));
       //Si lo ultimo que se leyo de la palabra NO es un fin de cadena, mandar error
       if (simbolo != "FDC") return false;
       //Se vacia la pila
       pila = [];
-      console.log("Pila",pila, "Resto de la entrada: " + palabra.substring(contador, palabra.length));
+      console.log("Pila", pila, "Resto de la entrada: " + palabra.substring(contador, palabra.length));
       return true;
 
     }

@@ -2,6 +2,9 @@
 <html>
 
 <head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <title>Tabla de analisis LR © López Reyes</title>
@@ -86,8 +89,8 @@
 
 
     $(document).ready(function () {
-       $('#input1').keyup(function () { analisis(); });
-   });
+      $('#input1').keyup(function () { analisis(); });
+    });
 
     source.addEventListener('input', inputHandler);
     source.addEventListener('propertychange', inputHandler);
@@ -106,7 +109,7 @@
     let letrasMayusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
     let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-    onload = (event) => { document.getElementById('btn1').click();};
+    onload = (event) => { document.getElementById('btn1').click(); };
     analisis = () => {
       console.clear();
       let input = document.getElementById('input1').value;
