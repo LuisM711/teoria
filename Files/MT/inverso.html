@@ -33,7 +33,7 @@
       </div>
       <div class="col-lg">
         <div class="form-group">
-          <label id="label_cinta" for="exampleInputEmail1">Salida [Cinta final]</label>
+          <label id="label_cinta" for="exampleInputEmail1">Salida</label>
           <input type="text" class="form-control" id="cinta1" aria-describedby="" placeholder="" value="" readonly />
         </div>
       </div>
@@ -99,6 +99,7 @@
         cintaFinal += index == cinta.length - 1 ? value : value + ", ";
       });
       cintaFinal += "]";
+      getPalabra(cinta);
       output2.value = cintaFinal;
     }
     checarAnalisis = (input) => {
@@ -217,7 +218,6 @@
 
     function reverse(s) {
       return s.split("").reverse().join("");
-
     }
     function borrar1() {
       var inputPalabra = document.getElementById("input1");
@@ -229,6 +229,13 @@
     function borrarComprobacion() {
       var inputBoleano = document.getElementById("output1");
       inputBoleano.value = "";
+    }
+    getPalabra = (array) => {
+      let label = document.getElementById("label_cinta");
+      label.innerHTML = "Salida: ";
+      array.forEach((element)=>{
+        label.innerHTML += element!=="Δ" ? element:"";
+      });
     }
   </script>
 </body>
