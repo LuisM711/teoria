@@ -99,6 +99,7 @@
         cintaFinal += index == cinta.length - 1 ? value : value + ", ";
       });
       cintaFinal += "]";
+      getPalabra();
       output2.value = cintaFinal;
     }
     checarAnalisis = (input) => {
@@ -210,6 +211,13 @@
     function borrarComprobacion() {
       var inputBoleano = document.getElementById("output1");
       inputBoleano.value = "";
+    }
+    getPalabra = (array) => {
+      let label = document.getElementById("label_cinta");
+      label.innerHTML = "Salida: ";
+      array.forEach((element)=>{
+        label.innerHTML += element!=="Δ" ? element:"";
+      });
     }
   </script>
 </body>
