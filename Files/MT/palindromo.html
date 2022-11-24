@@ -33,7 +33,7 @@
       </div>
       <div class="col-lg">
         <div class="form-group">
-          <label id="label_cinta" for="exampleInputEmail1">Salida</label>
+          <label id="label_cinta" for="exampleInputEmail1">Salida [Cinta1]</label>
           <input type="text" class="form-control" id="cinta1" aria-describedby="" placeholder="" value="" readonly />
         </div>
       </div>
@@ -53,6 +53,7 @@
           onclick="borrarComprobacion()">Borrar comprobación</button>
       </div> -->
     </div>
+    <label id="labelSalida"></label>
     <div class="card">
       <div class="card-body">
         © 2022 Luis Mario López Reyes
@@ -82,9 +83,9 @@
     let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
     let cinta = [], cinta2 = [];
-    onload = (event) => { document.getElementById('btn1').click(); };
+    onload = (event) => { document.getElementById('btn1').click();};
     analisis = () => {
-      console.clear();
+      //console.clear();
       let input = document.getElementById('input1').value;
       let output = document.getElementById('output1');
       let output2 = document.getElementById('cinta1');
@@ -99,7 +100,9 @@
         cintaFinal += index == cinta.length - 1 ? value : value + ", ";
       });
       cintaFinal += "]";
-      getPalabra(cinta);
+      let label = document.getElementById("labelSalida");label.innerHTML = "";
+      label.innerHTML +="Cinta 1: "; getPalabra(cinta);
+      label.innerHTML +="Cinta 2: ";getPalabra(cinta2);
       output2.value = cintaFinal;
     }
     checarAnalisis = (input) => {
@@ -212,11 +215,11 @@
       inputBoleano.value = "";
     }
     getPalabra = (array) => {
-      let label = document.getElementById("label_cinta");
-      label.innerHTML = "Salida: ";
+      let label = document.getElementById("labelSalida");
       array.forEach((element) => {
         label.innerHTML += element !== "Δ" ? element : "";
       });
+      label.innerHTML += "<br>";
     }
     getFirstIndex = (palabra) => {
       for (let i = 0; i < palabra.length; i++) {
