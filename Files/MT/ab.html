@@ -47,13 +47,16 @@
     </div>
     <div class="row">
       <div class="col"><button onclick="analisis()" class="btn btn-primary" id="btn1">Comprobar</button>
-        <button type="button" class="btn btn-danger" id="borrar1" onclick="borrar1()">Borrar</button>
+        <button type="button" class="btn btn-danger" style="float: right;" id="borrar1"
+          onclick="borrar1()">Borrar</button>
       </div>
       <!-- <div class="col"><button type="button" class="btn btn-secondary" id="borrar1"
           onclick="borrarComprobacion()">Borrar</button>
       </div> -->
     </div>
     <div class="card">
+      <a href="/" style="float: right;" class="btn btn-outline-primary" role="button" aria-pressed="true">Ver todos los
+        programas</a>
       <div class="card-body">
         © 2022 Luis Mario López Reyes
       </div>
@@ -66,7 +69,7 @@
       event.preventDefault();
     });
     $(document).ready(function () {
-      $('#input1').keyup(function () {$(this).val($(this).val().toLowerCase()); analisis(); });
+      $('#input1').keyup(function () { $(this).val($(this).val().toLowerCase()); analisis(); });
     });
   </script>
 
@@ -212,8 +215,8 @@
     getPalabra = (array) => {
       let label = document.getElementById("label_cinta");
       label.innerHTML = "Salida: ";
-      array.forEach((element)=>{
-        label.innerHTML += element!=="Δ" ? element:"";
+      array.forEach((element) => {
+        label.innerHTML += element !== "Δ" ? element : "";
       });
     }
   </script>

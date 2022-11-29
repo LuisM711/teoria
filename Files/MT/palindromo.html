@@ -47,7 +47,8 @@
     </div>
     <div class="row">
       <div class="col"><button onclick="analisis()" class="btn btn-primary" id="btn1">Comprobar</button>
-        <button type="button" class="btn btn-danger" id="borrar1" onclick="borrar1()">Borrar</button>
+        <button type="button" class="btn btn-danger" style="float: right;" id="borrar1"
+          onclick="borrar1()">Borrar</button>
       </div>
       <!-- <div class="col"><button type="button" class="btn btn-secondary" id="borrar1"
           onclick="borrarComprobacion()">Borrar comprobación</button>
@@ -55,6 +56,8 @@
     </div>
     <label id="labelSalida"></label>
     <div class="card">
+      <a href="/" style="float: right;" class="btn btn-outline-primary" role="button" aria-pressed="true">Ver todos los
+        programas</a>
       <div class="card-body">
         © 2022 Luis Mario López Reyes
       </div>
@@ -69,21 +72,15 @@
     $(document).ready(function () {
       $('#input1').keyup(function () { $(this).val($(this).val().toLowerCase()); analisis(); });
     });
-  </script>
 
+    // let letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    // let letrasMinusculas = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    // let letrasMayusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    // let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
-  <script>
-
-    let letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-
-
-
-    let letrasMinusculas = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
-    let letrasMayusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-    let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-    let cinta = [], cinta2 = [];
-    onload = (event) => { document.getElementById('btn1').click();};
+    let cinta = [];
+    const numeroDeCintas = 2;
+    onload = (event) => { document.getElementById('btn1').click(); };
     analisis = () => {
       console.clear();
       let input = document.getElementById('input1').value;
@@ -96,24 +93,21 @@
       }
       let cintaFinal = "";
       cintaFinal += "[";
-      cinta.forEach(callback = (value, index) => {
-        cintaFinal += index == cinta.length - 1 ? value : value + ", ";
+      cinta[0].forEach(callback = (value, index) => {
+        cintaFinal += index == cinta[0].length - 1 ? value : value + ", ";
       });
       cintaFinal += "]";
-      let label = document.getElementById("labelSalida");label.innerHTML = "";
-      label.innerHTML +="Cinta 1: "; getPalabra(cinta);
-      label.innerHTML +="Cinta 2: ";getPalabra(cinta2);
+      let label = document.getElementById("labelSalida"); label.innerHTML = "";
+
+
+      cinta.forEach(callback = (value, index) => {
+        label.innerHTML += `Cinta ${index + 1}: `; getPalabra(value);
+      });
       output2.value = cintaFinal;
     }
     checarAnalisis = (input) => {
       //Declaracion de tabla de analisis Δ
-      let tabla = new Array(1);
-      tabla["q0"] = new Array(1);
-      tabla["q1"] = new Array(1);
-      tabla["q2"] = new Array(1);
-      tabla["q3"] = new Array(1);
-      tabla["q4"] = new Array(1);
-
+      let tabla = [];
       tabla["q0"] = [
         [['a', 'a', 'R'], ['Δ', 'a', 'L'], "q1"],
         [['b', 'b', 'R'], ['Δ', 'b', 'L'], "q1"]
@@ -137,47 +131,47 @@
       let palabra = input;
       if (palabra == undefined) palabra = "";
       console.log("Palabra: ", palabra);
-      cinta = [];
-      cinta2 = [];
-      cinta.push('Δ', 'Δ', 'Δ');
-      for (let i = 0; i < palabra.length; i++)cinta.push('Δ');
-      cinta.push(...palabra.split(''));
-      for (let i = 0; i < palabra.length; i++)cinta.push('Δ');
-      cinta.push('Δ', 'Δ', 'Δ');
-      for (let i = 0; i < cinta.length; i++)cinta2.push('Δ');
+      for (let i = 0; i < numeroDeCintas; i++)cinta[i] = [];
+      cinta[0].push('Δ', 'Δ', 'Δ');
+      for (let i = 0; i < palabra.length; i++)cinta[0].push('Δ');
+      cinta[0].push(...palabra.split(''));
+      for (let i = 0; i < palabra.length; i++)cinta[0].push('Δ');
+      cinta[0].push('Δ', 'Δ', 'Δ');
+      for (let i = 0; i < cinta[0].length; i++)cinta[1].push('Δ');
       let valorTabla = '';
-      let apuntador = getFirstIndex(cinta);
-      let apuntador2 = getFirstIndex(cinta);
+      let apuntador = [];
+      apuntador[0] = getFirstIndex(cinta[0]);
+      apuntador[1] = apuntador[0];
       let estado = "q0";
       valorTabla = '';
       let control = 0;
       let flag = false;
-      console.log(cinta, cinta[apuntador], estado);
+      console.log(cinta[0], cinta[0][apuntador[0]], estado);
       //debugger;
       while (valorTabla != "aceptar") {
         control++; if (control > 500) { console.log("Fatal error"); return false; }
         flag = false;
         for (let i = 0; i < tabla[estado].length; i++) {
-          if (cinta[apuntador] == tabla[estado][i][0][0] && cinta2[apuntador2] == tabla[estado][i][1][0]) {
+          if (cinta[0][apuntador[0]] == tabla[estado][i][0][0] && cinta[1][apuntador[1]] == tabla[estado][i][1][0]) {
             valorTabla = tabla[estado][i];
             flag = true;
           }
         }
         if (tabla[estado] === "aceptar") return true;
         if (!flag) return false;
-        cinta[apuntador] = valorTabla[0][1];
-        cinta2[apuntador2]= valorTabla[1][1];
-        if (valorTabla[0][2] === "L") apuntador--;
-        else if (valorTabla[0][2] === "R") apuntador++;
-        else if (valorTabla[0][2] === "S") apuntador = apuntador;
+        cinta[0][apuntador[0]] = valorTabla[0][1];
+        cinta[1][apuntador[1]] = valorTabla[1][1];
+        if (valorTabla[0][2] === "L") apuntador[0]--;
+        else if (valorTabla[0][2] === "R") apuntador[0]++;
+        else if (valorTabla[0][2] === "S") apuntador[0] = apuntador[0];
         else return false;
 
-        if (valorTabla[1][2] === "L") apuntador2--;
-        else if (valorTabla[1][2] === "R") apuntador2++;
-        else if (valorTabla[1][2] === "S") apuntador2 = apuntador2;
+        if (valorTabla[1][2] === "L") apuntador[1]--;
+        else if (valorTabla[1][2] === "R") apuntador[1]++;
+        else if (valorTabla[1][2] === "S") apuntador[1] = apuntador[1];
         else return false;
         estado = valorTabla[2];
-        console.log(cinta, cinta[apuntador], estado);
+        console.log(cinta[0], cinta[0][apuntador[0]], estado);
       }
     }
 
