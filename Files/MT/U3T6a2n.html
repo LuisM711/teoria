@@ -171,7 +171,7 @@
       console.log(cinta[0], cinta[0][apuntador[0]], estado);
       //debugger;
       while (valorTabla != "aceptar") {
-        control++; if (control > 500) { console.log("Fatal error"); return false; }
+        control++; if (control > 5000) { console.log("Fatal error"); return false; }
         flag = true;
         for (let i = 0; i < tabla[estado].length; i++) {
           flag = true;
