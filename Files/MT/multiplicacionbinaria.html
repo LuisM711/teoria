@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <title>Maquina de Turing(MT) © López Reyes</title>
+</head>
+
+<body class="container">
+  <script src="https://kit.fontawesome.com/23bddc577d.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap @4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <div class="container">
+    <div class="row row-cols-2 inputs">
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Entrada</label>
+          <input type="text" class="form-control" id="input1" aria-describedby=""
+            placeholder="Introduzca palabra a verificar" value="10*10" />
+        </div>
+      </div>
+      <div class="col-lg">
+        <div class="form-group">
+          <label id="label_cinta" for="exampleInputEmail1">Salida [Cinta1]</label>
+          <input type="text" class="form-control" id="cinta1" aria-describedby="" placeholder="" value="" readonly />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="exampleInputPassword1">Comprobación</label>
+          <input type="text" class="form-control" id="output1" readonly
+            placeholder="Aqui se mostraran los resultados" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"><button onclick="analisis()" class="btn btn-primary" id="btn1">Comprobar</button>
+        <button type="button" class="btn btn-danger" style="float: right;" id="borrar1"
+          onclick="borrar1()">Borrar</button>
+      </div>
+      <!-- <div class="col"><button type="button" class="btn btn-secondary" id="borrar1"
+          onclick="borrarComprobacion()">Borrar comprobación</button>
+      </div> -->
+    </div>
+    <label id="labelSalida"></label>
+    <div class="card">
+      <a href="/teoria" style="float: right;" class="btn btn-outline-primary" role="button" aria-pressed="true">Ver
+        todos los
+        programas</a>
+      <div class="card-body">
+        © 2022 Luis Mario López Reyes
+      </div>
+    </div>
+  </div>
+  <script>
+    document.querySelector("#input1").addEventListener("keyup", event => {
+      if (event.key === "Enter") document.querySelector("#btn1").click();
+      if (event.key === "Escape") document.querySelector("#borrar1").click();
+      event.preventDefault();
+    });
+    $(document).ready(function () {
+      $('#input1').keyup(function () { $(this).val($(this).val().toLowerCase()); analisis(); });
+    });
+
+    // let letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    // let letrasMinusculas = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    // let letrasMayusculas = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    // let digitos = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+    let cinta = [];
+    const numeroDeCintas = 4;
+    onload = (event) => { document.getElementById('btn1').click(); };
+    analisis = () => {
+      console.clear();
+      let input = document.getElementById('input1').value;
+      let output = document.getElementById('output1');
+      let output2 = document.getElementById('cinta1');
+      try {
+        output.value = checarAnalisis(input) ? "Cadena aceptada" : "Cadena no aceptada";
+      } catch (error) {
+        output.value = "Cadena no aceptada";
+      }
+      let cintaFinal = "";
+      cintaFinal += "[";
+      cinta[0].forEach(callback = (value, index) => {
+        cintaFinal += index == cinta[0].length - 1 ? value : value + ", ";
+      });
+      cintaFinal += "]";
+      let label = document.getElementById("labelSalida"); label.innerHTML = "";
+
+
+      cinta.forEach(callback = (value, index) => {
+        label.innerHTML += `Cinta ${index + 1}: `; getPalabra(value);
+      });
+      output2.value = cintaFinal;
+    }
+    checarAnalisis = (input) => {
+      //Declaracion de tabla de analisis Δ
+      let tabla = [];
+      tabla["q0"] = [
+        [['0', '0', 'R'], ['Δ', '0', 'R'], ['Δ', '0', 'R'], ['Δ', '0', 'R'], "q1"],
+        [['1', '1', 'R'], ['Δ', '1', 'R'], ['Δ', '0', 'R'], ['Δ', '0', 'R'], "q1"]
+      ];
+      tabla["q1"] = [
+        [['0', '0', 'R'], ['Δ', '0', 'R'], ['Δ', '0', 'R'], ['Δ', '0', 'R'], "q1"],
+        [['1', '1', 'R'], ['Δ', '1', 'R'], ['Δ', '0', 'R'], ['Δ', '0', 'R'], "q1"],
+        [['*', '*', 'S'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'L'], ['Δ', 'Δ', 'S'], "q2"]
+      ];
+      tabla["q2"] = [
+        [['*', '*', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'L'], ['Δ', 'Δ', 'S'], "q2"],
+        [['*', '*', 'R'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'R'], ['Δ', 'Δ', 'S'], "q3"]
+      ];
+      tabla["q3"] = [
+        [['0', '0', 'R'], ['Δ', 'Δ', 'S'], ['0', '0', 'R'], ['Δ', 'Δ', 'S'], "q3"],
+        [['1', '1', 'R'], ['Δ', 'Δ', 'S'], ['0', '1', 'R'], ['Δ', 'Δ', 'S'], "q3"],
+        [['Δ', '=', 'S'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'L'], ['Δ', 'Δ', 'S'], "q4"]
+      ];
+      tabla["q4"] = [
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'L'], "q4"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'L'], "q4"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'L'], ['0', '0', 'S'], ['1', '1', 'S'], "q5"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'L'], ['0', '0', 'S'], ['0', '0', 'S'], "q5"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'L'], ['0', '0', 'S'], ['Δ', 'Δ', 'L'], "q5"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'L'], ['1', '1', 'S'], ['0', '0', 'S'], "q6"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'L'], ['1', '1', 'S'], ['1', '1', 'S'], "q6"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'L'], ['1', '1', 'S'], ['Δ', 'Δ', 'L'], "q6"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'R'], "q15"]
+      ];
+      tabla["q5"] = [
+        [['=', '=', 'S'], ['0', '0', 'L'], ['0', '0', 'S'], ['Δ', '0', 'L'], "q5"],
+        [['=', '=', 'S'], ['1', '1', 'L'], ['0', '0', 'S'], ['Δ', '0', 'L'], "q5"],
+        [['=', '=', 'S'], ['1', '1', 'L'], ['0', '0', 'S'], ['1', '1', 'L'], "q5"],
+        [['=', '=', 'S'], ['0', '0', 'L'], ['0', '0', 'S'], ['1', '1', 'L'], "q5"],
+        [['=', '=', 'S'], ['1', '1', 'L'], ['0', '0', 'S'], ['0', '0', 'L'], "q5"],
+        [['=', '=', 'S'], ['0', '0', 'L'], ['0', '0', 'S'], ['0', '0', 'L'], "q5"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'S'], ['Δ', 'Δ', 'R'], "q7"]
+      ];
+      tabla["q6"] = [
+        [['=', '=', 'S'], ['1', '1', 'L'], ['1', '1', 'S'], ['Δ', '1', 'L'], "q6"],
+        [['=', '=', 'S'], ['0', '0', 'L'], ['1', '1', 'S'], ['Δ', '0', 'L'], "q6"],
+        [['=', '=', 'S'], ['0', '0', 'L'], ['1', '1', 'S'], ['1', '1', 'L'], "q6"],
+        [['=', '=', 'S'], ['0', '0', 'L'], ['1', '1', 'S'], ['0', '0', 'L'], "q6"],
+        [['=', '=', 'S'], ['1', '1', 'L'], ['1', '1', 'S'], ['0', '1', 'L'], "q6"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'S'], ['Δ', 'Δ', 'R'], "q8"],
+        [['=', '=', 'S'], ['1', '1', 'L'], ['1', '1', 'S'], ['1', '0', 'L'], "q12"]
+      ];
+      tabla["q7"] = [
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'S'], ['U', 'U', 'R'], "q7"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'S'], ['1', '1', 'R'], "q7"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'S'], ['0', '0', 'R'], "q7"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'S'], ['Z', 'Z', 'R'], "q7"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'R'], ['0', '0', 'S'], ['Δ', 'Δ', 'S'], "q9"]
+      ];
+      tabla["q8"] = [
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'S'], ['Z', 'Z', 'R'], "q8"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'S'], ['U', 'U', 'R'], "q8"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'S'], ['0', '0', 'R'], "q8"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'S'], ['1', '1', 'R'], "q8"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'R'], ['1', '1', 'S'], ['Δ', 'Δ', 'S'], "q11"]
+      ];
+      tabla["q9"] = [
+        [['=', '=', 'S'], ['0', '0', 'R'], ['0', '0', 'S'], ['Δ', 'Δ', 'S'], "q9"],
+        [['=', '=', 'S'], ['1', '1', 'R'], ['0', '0', 'S'], ['Δ', 'Δ', 'S'], "q9"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'S'], ['Δ', 'Δ', 'L'], "q10"]
+      ];
+      tabla["q10"] = [
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'S'], ['U', 'U', 'L'], "q10"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'S'], ['Z', 'Z', 'L'], "q10"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'S'], ['U', 'U', 'L'], "q10"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'S'], ['Z', 'Z', 'L'], "q10"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'L'], ['1', 'U', 'L'], "q4"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'L'], ['0', 'Z', 'L'], "q4"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'L'], ['1', 'U', 'L'], "q4"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'L'], ['0', 'Z', 'L'], "q4"]
+
+      ];
+      tabla["q11"] = [
+        [['=', '=', 'S'], ['1', '1', 'R'], ['1', '1', 'S'], ['Δ', 'Δ', 'S'], "q11"],
+        [['=', '=', 'S'], ['0', '0', 'R'], ['1', '1', 'S'], ['Δ', 'Δ', 'S'], "q11"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'S'], ['Δ', 'Δ', 'L'], "q10"]
+      ];
+      tabla["q12"] = [
+        [['=', '=', 'S'], ['1', '1', 'L'], ['1', '1', 'S'], ['Δ', '0', 'L'], "q12"],
+        [['=', '=', 'S'], ['1', '1', 'L'], ['1', '1', 'S'], ['0', '0', 'L'], "q12"],
+        [['=', '=', 'S'], ['1', '1', 'L'], ['1', '1', 'S'], ['1', '1', 'L'], "q12"],
+        [['=', '=', 'S'], ['0', '0', 'L'], ['1', '1', 'S'], ['0', '1', 'L'], "q6"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'S'], ['Δ', '1', 'L'], "q6"]
+      ];
+      tabla["q13"] = [
+        [['Δ', '1', 'R'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['U', '1', 'R'], "q13"],
+        [['Δ', '0', 'R'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['0', '0', 'R'], "q13"],
+        [['Δ', '1', 'R'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'R'], "q13"],
+        [['Δ', '0', 'R'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['Z', '0', 'R'], "q13"],
+        [['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], "q14"]
+      ];
+      tabla["q14"] = "aceptar";
+      tabla["q15"] = [
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['0', 'Δ', 'R'], "q15"],
+        [['=', '=', 'S'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['Z', 'Δ', 'R'], "q15"],
+        [['=', '=', 'R'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['1', '1', 'S'], "q13"],
+        [['=', '=', 'R'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['U', 'U', 'S'], "q13"],
+        [['=', '=', 'R'], ['Δ', 'Δ', 'S'], ['Δ', 'Δ', 'S'], ['Δ', '0', 'S'], "q13"]
+      ];
+      let palabra = input;
+      if (palabra == undefined) palabra = "";
+      console.log("Palabra: ", palabra);
+
+      //Este proceso le asigna valores iniciales a la primer cinta de acuerdo con lo que ingrese el usuario
+
+      for (let i = 0; i < numeroDeCintas; i++)cinta[i] = [];
+      cinta[0].push('Δ', 'Δ', 'Δ');
+      for (let i = 0; i < palabra.length; i++)cinta[0].push('Δ');
+      cinta[0].push(...palabra.split(''));
+      for (let i = 0; i < palabra.length; i++)cinta[0].push('Δ');
+      cinta[0].push('Δ', 'Δ', 'Δ');
+
+      //Este ciclo agrega espacios en blanco a todas las cintas en funcion del tamaño de la primer cinta
+      for (let i = 1; i < numeroDeCintas; i++)for (let j = 0; j < cinta[0].length; j++)cinta[i].push('Δ');
+      let valorTabla = '';
+      let apuntador = [];
+      //Este ciclo inicializa todos los apuntadores en 0 
+      for (let i = 0; i < numeroDeCintas; i++)apuntador[i] = 0;
+      //Aqui se le asigna un valor al primer apuntador, se le indica que apunte al primer caracter diferente a Δ que encuentre en la primer cinta
+      apuntador[0] = getFirstIndex(cinta[0]);
+      //Este ciclo le asigna el valor anteriormente asignado del primer apuntador a todos los demas apuntadores
+      for (let i = 1; i < numeroDeCintas; i++)apuntador[i] = apuntador[0];
+      let estado = "q0";
+      let control = 0;
+      let flag = false;
+      console.log(cinta[0], cinta[0][apuntador[0]], estado);
+      //debugger;
+      while (valorTabla != "aceptar") {
+        //if(estado=='q4')debugger;
+        control++; if (control > 5000) { console.log("Fatal error"); return false; }
+        flag = true;
+        for (let i = 0; i < tabla[estado].length; i++) {
+          flag = true;
+          //Se checa si en alguna cinta no coincide con lo que la tabla dice, se guardara false en la bandera
+          for (let j = 0; j < numeroDeCintas; j++)if (cinta[j][apuntador[j]] != tabla[estado][i][j][0]) { flag = false; break; }
+          //Si la bandera sigue encendida es porque paso por la prueba, entonces se le asigna valor a 'valorTabla'
+          if (flag) { valorTabla = tabla[estado][i]; break; }
+        }
+        if (tabla[estado] === "aceptar") return true;
+        if (!flag) return false;
+        //Este ciclo remplaza el valor que la tabla indique a cada cinta
+        for (let i = 0; i < numeroDeCintas; i++)cinta[i][apuntador[i]] = valorTabla[i][1];
+        //Este ciclo lee hacia donde se va mover el apuntador en cada cinta de acuerdo a lo que valorTabla diga
+        for (let i = 0; i < numeroDeCintas; i++) {
+          if (valorTabla[i][valorTabla[i].length - 1] === 'L') apuntador[i]--;
+          else if (valorTabla[i][valorTabla[i].length - 1] === 'R') apuntador[i]++;
+          else if (valorTabla[i][valorTabla[i].length - 1] === 'S') apuntador[i] = apuntador[i];
+          else return false;
+        }
+        //Se asigna el siguiente estado tomando como valor el ultimo valor que tiene el array valorTabla
+        estado = valorTabla[valorTabla.length - 1];
+        for (let i = 0; i < numeroDeCintas; i++)console.log(cinta[i][apuntador[i]], apuntador[i], estado);
+        //console.log(cinta[0], cinta[0][apuntador[0]], estado);
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function reverse(s) {
+      return s.split("").reverse().join("");
+    }
+    function borrar1() {
+      var inputPalabra = document.getElementById("input1");
+      var inputBoleano = document.getElementById("output1");
+      inputPalabra.value = "";
+      inputBoleano.value = "";
+      analisis();
+    }
+    function borrarComprobacion() {
+      var inputBoleano = document.getElementById("output1");
+      inputBoleano.value = "";
+    }
+    getPalabra = (array) => {
+      let label = document.getElementById("labelSalida");
+      array.forEach((element) => {
+        label.innerHTML += element !== "Δ" ? element : "";
+      });
+      label.innerHTML += "<br>";
+    }
+    getFirstIndex = (palabra) => {
+      for (let i = 0; i < palabra.length; i++) {
+        if (palabra[i] != "Δ") return i;
+      }
+      return -1;
+    }
+  </script>
+</body>
+
+</html>
+<style>
+  #label_cinta {
+    width: 100%;
+    text-align: center;
+  }
+
+  #cinta1 {
+    text-align: center;
+  }
+</style>
